@@ -640,8 +640,14 @@ margin:40px auto;
 
     .webinar-wrapper{
         width:100%;
-        margin:0;
+        margin:0 auto;
     }
+
+    #offer-card{
+
+    margin:15px auto 0;
+
+}
 
     .video-container{
         border-radius:0;
