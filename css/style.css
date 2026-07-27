@@ -140,7 +140,7 @@ body{
 
     background:white;
 
-    padding:20px;
+    padding:12px;
 
     border-radius:10px;
 
@@ -623,13 +623,23 @@ margin:40px auto;
         padding:10px;
     }
 
+    .header{
+        font-size:22px;
+        padding:16px;
+        margin-bottom:15px;
+    }
+
     .video-box{
-        padding:10px;
+        padding:8px;
     }
 
     .webinar-wrapper{
         width:100%;
-        margin:15px auto;
+        margin:0;
+    }
+
+    .video-container{
+        border-radius:12px;
     }
 
 }
