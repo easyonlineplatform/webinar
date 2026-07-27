@@ -263,11 +263,3 @@ savedComments.forEach(function(message) {
     displayComment(message);
 
 });
-
-window.addEventListener("beforeunload", function (event) {
-
-    event.preventDefault();
-
-    event.returnValue = "";
-
-});
