@@ -719,4 +719,16 @@ margin:40px auto;
 
 }
 
+#whatsappBtn{
+    bottom:110px;
+    right:14px;
+    width:56px;
+    height:56px;
+}
+
+#whatsappBtn img{
+    width:30px;
+    height:30px;
+}
+
 }
