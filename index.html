@@ -6,85 +6,48 @@
 
 <title>EASY AI TRAINING</title>
 
-<style>
-
-body{
-margin:0;
-background:#f3f4f6;
-font-family:Arial,Helvetica,sans-serif;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:20px;
-}
-
-.header{
-background:#111827;
-color:white;
-padding:20px;
-text-align:center;
-font-size:32px;
-font-weight:bold;
-border-radius:10px;
-margin-bottom:20px;
-}
-
-.video-box{
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 3px 15px rgba(0,0,0,.12);
-}
-
-.video-placeholder{
-height:500px;
-background:#000;
-border-radius:10px;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-font-size:26px;
-}
-
-.comments{
-margin-top:20px;
-background:white;
-padding:20px;
-border-radius:10px;
-box-shadow:0 3px 15px rgba(0,0,0,.12);
-}
-
-.offer{
-margin-top:20px;
-display:none;
-background:#FFD54F;
-padding:25px;
-border-radius:10px;
-text-align:center;
-font-size:28px;
-font-weight:bold;
-}
-
-button{
-background:#16a34a;
-color:white;
-padding:18px 40px;
-font-size:22px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-margin-top:20px;
-}
-
-</style>
-
+<link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+<!-- WELCOME SCREEN -->
+<div id="welcome-screen">
 
+    <div class="welcome-content">
+
+        <h1>Easy AI Training</h1>
+
+        <p>
+            You're about to access a private training designed to help you learn
+            practical digital skills and online opportunities directly from your smartphone.
+        </p>
+
+        <button id="beginBtn">▶ Begin Private Training</button>
+
+    </div>
+
+</div>
+<!-- CONNECTING SCREEN -->
+
+<div id="loading-screen" style="display:none;">
+
+    <div class="loading-content">
+
+        <h1>Easy AI Training</h1>
+
+        <div id="countdown-number">20</div>
+
+        <p id="loading-message">
+
+            Connecting you to your private training...
+
+        </p>
+
+        <div class="loader-circle"></div>
+
+    </div>
+
+</div>
 <div class="container">
 
 <div class="header">
@@ -95,41 +58,98 @@ EASY AI TRAINING
 
 <div class="video-box">
 
+<div class="webinar-wrapper">
+
+    <div class="video-container">
+
 <iframe
-    width="100%"
-    height="600"
-    src="https://www.youtube.com/embed/CtDrKS4uZFk?rel=0&modestbranding=1"
-    title="Easy AI Training"
+    id="webinarPlayer"
+    src="https://www.youtube.com/embed/CtDrKS4uZFk?enablejsapi=1&rel=0"
+    title="Easy AI Training Webinar"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen>
 </iframe>
 
+    </div>
+
+</div>
+<!-- TIMED OFFER -->
+
+<div id="offer-wrapper">
+
+<div id="offer-card">
+
+    <h2>Today's Special Offer</h2>
+
+    <p>Easy Online Digital Training</p>
+
+    <h1>
+        <span class="old-price">GH₵200</span>
+        GH₵97
+    </h1>
+
+    <p class="bonus-text">
+        🎁 Join within the next 60 minutes and you'll receive the
+        <strong>Fast Action Bonus Bundle</strong> FREE!
+    </p>
+
+    <div id="offer-countdown">
+
+        Offer expires in
+
+        <div id="countdown-timer">
+            60:00
+        </div>
+
+    </div>
+
+    <button id="joinBtn">
+        Join Now
+    </button>
+
+    </div>
+
+</div>
 </div>
 
 <div class="comments">
 
-<h2>Questions & Comments</h2>
+    <h2>Comment Section</h2>
 
-<p>Your comments section will appear here.</p>
+    <div id="commentsList"></div>
+
+    <form id="commentForm">
+
+        <textarea
+            id="commentText"
+            placeholder="Write your comment..."
+            rows="4"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Post Comment
+        </button>
+
+    </form>
 
 </div>
 
-<div class="offer">
-
-🎁 SPECIAL OFFER
-
-<br>
-
-<button>
-
-JOIN NOW
-
-</button>
-
 </div>
+<script src="https://www.youtube.com/iframe_api"></script>
 
-</div>
+<a id="whatsappBtn"
+   href="https://wa.me/233592079372?text=Hi!%20I'm%20watching%20your%20Easy%20Online%20Digital%20Training%20webinar%20and%20I%20have%20a%20question%20before%20enrolling."
+   target="_blank"
+   aria-label="WhatsApp Support">
+    
+   <img src="images/logo/icons/whatsapp.png" alt="WhatsApp">
+</a>
+
+<script src="js/config.js"></script>
+<script src="js/welcome.js"></script>
+<script src="js/script.js"></script>
 
 </body>
 
