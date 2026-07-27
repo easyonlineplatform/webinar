@@ -720,10 +720,11 @@ margin:40px auto;
 }
 
 #whatsappBtn{
-    bottom:110px;
-    right:14px;
+    bottom:18px;
+    right:12px;
     width:56px;
     height:56px;
+    z-index:10001;
 }
 
 #whatsappBtn img{
