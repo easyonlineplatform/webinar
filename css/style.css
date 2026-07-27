@@ -612,3 +612,24 @@ margin:40px auto;
     line-height:1.5;
 
 }
+
+/* ==========================================
+   MOBILE RESPONSIVENESS
+========================================== */
+
+@media (max-width:768px){
+
+    .container{
+        padding:10px;
+    }
+
+    .video-box{
+        padding:10px;
+    }
+
+    .webinar-wrapper{
+        width:100%;
+        margin:15px auto;
+    }
+
+}
