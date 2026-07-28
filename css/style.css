@@ -792,16 +792,25 @@ margin:40px auto;
 }
 
 #welcome-screen{
-    justify-content:flex-start;
-    align-items:flex-start;
-    padding:20px 16px 20px;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:0 18px;
+
 }
 
 .welcome-content{
+
     width:100%;
-    max-width:430px;
-    margin:0 auto;
+
+    max-width:380px;
+
+    margin:-55px auto 0;
+
     text-align:center;
+
 }
 
 .welcome-content h1{
