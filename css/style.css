@@ -747,8 +747,6 @@ margin:40px auto;
     height:30px;
 }
 
-}
-
 #welcome-screen{
     justify-content:flex-start;
     padding:0 16px 20px;
@@ -768,19 +766,12 @@ margin:40px auto;
 }
 
 .welcome-content p{
-
     width:90%;
-
     max-width:340px;
-
     margin:0 auto 30px;
-
     text-align:left;
-
     font-size:16px;
-
     line-height:1.7;
-
 }
 
 #beginBtn{
@@ -789,4 +780,6 @@ margin:40px auto;
     font-size:18px;
     padding:16px 18px;
     white-space:normal;
+}
+
 }
