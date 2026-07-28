@@ -623,6 +623,40 @@ margin:40px auto;
 }
 
 /* ==========================================
+   PREMIUM COUNTDOWN TIMER
+========================================== */
+
+#countdown-timer{
+
+    display:block;
+
+    width:140px;
+
+    margin:18px auto 26px;
+
+    padding:10px 0;
+
+    background:#f8fff9;
+
+    border:2px solid #22c55e;
+
+    border-radius:14px;
+
+    color:#16a34a;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    text-align:center;
+
+    box-shadow:0 8px 18px rgba(34,197,94,.12);
+
+}
+
+/* ==========================================
    MOBILE RESPONSIVENESS
 ========================================== */
 
@@ -720,7 +754,17 @@ margin:40px auto;
 
 #offer-countdown{
 
-    margin-top:10px;
+    margin-top:22px;
+
+    text-align:center;
+
+    font-size:18px;
+
+    font-weight:500;
+
+    color:#6b7280;
+
+    letter-spacing:.4px;
 
 }
 
