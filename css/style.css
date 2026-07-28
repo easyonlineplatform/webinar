@@ -751,14 +751,13 @@ margin:40px auto;
 
 #welcome-screen{
     justify-content:flex-start;
-    align-items:flex-start;
-    padding:10px 16px 20px;
+    padding:0 16px 20px;
 }
 
 .welcome-content{
     width:100%;
     max-width:430px;
-    margin:0 auto;
+    margin-top:25px;
     text-align:center;
 }
 
