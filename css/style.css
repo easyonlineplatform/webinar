@@ -739,3 +739,32 @@ margin:40px auto;
 }
 
 }
+
+#welcome-screen{
+    padding:20px 14px;
+}
+
+.welcome-content{
+    width:100%;
+    max-width:420px;
+}
+
+.welcome-content h1{
+    font-size:34px;
+    line-height:1.1;
+    margin-bottom:18px;
+}
+
+.welcome-content p{
+    font-size:17px;
+    line-height:1.6;
+    margin-bottom:28px;
+}
+
+#beginBtn{
+    width:100%;
+    max-width:340px;
+    font-size:18px;
+    padding:16px 18px;
+    white-space:normal;
+}
