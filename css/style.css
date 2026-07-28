@@ -757,9 +757,19 @@ margin:40px auto;
 }
 
 .welcome-content p{
+
+    width:90%;
+
+    max-width:340px;
+
+    margin:0 auto 30px;
+
+    text-align:left;
+
     font-size:16px;
-    line-height:1.6;
-    margin-bottom:26px;
+
+    line-height:1.7;
+
 }
 
 #beginBtn{
