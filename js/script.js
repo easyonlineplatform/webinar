@@ -13,6 +13,7 @@ let player;
 let offerShown = false;
 let countdownStarted = false;
 let videoTimer = null;
+let allowLeave = false;
 
 let countdownTimer = null;
 let timeRemaining = CONFIG.OFFER_DURATION; // 60 minutes in seconds
@@ -27,10 +28,18 @@ const commentText = document.getElementById("commentText");
 const commentsList = document.getElementById("commentsList");
 
 joinBtn.addEventListener("click", function () {
+
+    allowLeave = true;
+
     window.open(
         "https://selar.com/u6g2777366?add_to_cart=1",
         "_blank"
     );
+
+    setTimeout(function () {
+        allowLeave = false;
+    }, 1000);
+
 });
 
 // Hide webinar when page first loads
@@ -261,5 +270,15 @@ const savedComments = JSON.parse(
 savedComments.forEach(function(message) {
 
     displayComment(message);
+
+});
+
+window.addEventListener("beforeunload", function (event) {
+
+    if (allowLeave) return;
+
+    event.preventDefault();
+
+    event.returnValue = "";
 
 });
