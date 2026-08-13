@@ -59,9 +59,11 @@ function startCountdown(){
 
     loadingScreen.style.display="none";
 
-    container.style.display="block";
+container.style.display="block";
 
-    resumeOfferCountdown();
+createBunnyPlayer();
+
+resumeOfferCountdown();
 
     if (localStorage.getItem("offerExpired") === "true") {
 

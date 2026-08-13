@@ -9,7 +9,6 @@ console.log("script.js loaded");
 // APPLICATION VARIABLES
 // =====================================
 
-let player;
 let offerShown = false;
 let countdownStarted = false;
 let videoTimer = null;
@@ -45,64 +44,172 @@ joinBtn.addEventListener("click", function () {
 // Hide webinar when page first loads
 
 // =====================================
-// YOUTUBE PLAYER API
+// BUNNY STREAM PLAYER
+// CREATE ONLY WHEN WEBINAR STARTS
 // =====================================
 
-function onYouTubeIframeAPIReady() {
+function createBunnyPlayer() {
 
-    console.log("YouTube API Ready");
+    console.log("Creating Bunny Player");
 
-    player = new YT.Player("webinarPlayer", {
+    const videoContainer =
+        document.getElementById("videoContainer");
 
-        events: {
-            "onStateChange": onPlayerStateChange
-        }
+    if (!videoContainer) {
 
-    });
+        console.error(
+            "Bunny Player: video container not found"
+        );
 
-}
-
-function onPlayerStateChange(event) {
-
-    console.log("Player state:", event.data);
-
-    const savedPosition = localStorage.getItem("webinarPosition");
-
-if (
-    event.data === YT.PlayerState.PLAYING &&
-    savedPosition &&
-    player.getCurrentTime() < 2
-) {
-    player.seekTo(parseInt(savedPosition), true);
-}
-
-    if (event.data === YT.PlayerState.PLAYING) {
-
-        if (!videoTimer) {
-
-            videoTimer = setInterval(checkVideoTime, 1000);
-
-        }
-
-    } else {
-
-        clearInterval(videoTimer);
-        videoTimer = null;
+        return;
 
     }
 
+    // Prevent duplicate player creation
+    if (
+        document.getElementById("webinarPlayer")
+    ) {
+
+        console.log(
+            "Bunny Player iframe already exists"
+        );
+
+        return;
+
+    }
+
+    const iframe =
+        document.createElement("iframe");
+
+    iframe.id = "webinarPlayer";
+
+    iframe.src =
+        "https://player.mediadelivery.net/embed/722085/d7c65a9b-ed9d-40c1-888f-78865f07f1ed?preload=true";
+
+    iframe.loading = "lazy";
+
+    iframe.style.border = "0";
+    iframe.style.width = "100%";
+    iframe.style.height = "100%";
+
+    iframe.allow =
+        "autoplay; fullscreen; picture-in-picture";
+
+    iframe.allowFullscreen = true;
+
+    videoContainer.appendChild(iframe);
+
+    iframe.addEventListener(
+        "load",
+        function () {
+
+            console.log(
+                "Bunny iframe loaded"
+            );
+
+            BunnyProvider.initialize(
+    iframe,
+    {
+
+        onReady: function () {
+
+            console.log(
+                "Bunny Provider Ready"
+            );
+
+            VideoEngine.initialize(
+                "bunny",
+                BunnyProvider
+            );
+
+            console.log(
+                "Bunny Video Engine Ready"
+            );
+
+            // Immediately evaluate the webinar state
+            // using Bunny's real current position.
+            checkVideoTime();
+
+            VideoEngine.play();
+
+        },
+
+        onPlay: function () {
+
+            console.log(
+                "Bunny Playback Started"
+            );
+
+            if (!videoTimer) {
+
+                videoTimer =
+                    setInterval(
+                        checkVideoTime,
+                        1000
+                    );
+
+            }
+
+        },
+
+        onPause: function () {
+
+            console.log(
+                "Bunny Playback Paused"
+            );
+
+            clearInterval(
+                videoTimer
+            );
+
+            videoTimer = null;
+
+        },
+
+        onEnded: function () {
+
+            console.log(
+                "Bunny Playback Ended"
+            );
+
+            clearInterval(
+                videoTimer
+            );
+
+            videoTimer = null;
+
+        },
+
+        onTimeUpdate: function (currentTime) {
+
+            checkVideoTime(currentTime);
+
+        }
+
+    }
+);
+
+        },
+        { once: true }
+    );
+
 }
 
-function checkVideoTime() {
+function checkVideoTime(currentTime) {
 
-    if (!player) return;
+    if (!BunnyProvider.ready) return;
 
-    let currentTime = player.getCurrentTime();
+    if (typeof currentTime !== "number") {
+
+        currentTime =
+            VideoEngine.getCurrentTime();
+
+    }
 
     localStorage.setItem(
-    "webinarPosition",
-    Math.floor(currentTime)
-);
+        "webinarPosition",
+        Math.floor(currentTime)
+    );
 
     if (currentTime >= CONFIG.OFFER_TIME && !offerShown) {
 
