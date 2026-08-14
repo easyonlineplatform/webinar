@@ -837,3 +837,277 @@ margin:40px auto;
 }
 
 }
+
+/* ==========================================
+   EASY AI HUB INVITATION
+========================================== */
+
+#easyAiHubInvitation{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:20px;
+
+    background:rgba(0,0,0,.72);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+
+    z-index:11000;
+
+}
+
+#easyAiHubInvitation.show{
+
+    opacity:1;
+
+    visibility:visible;
+
+    pointer-events:auto;
+
+}
+
+.easy-ai-hub-card{
+
+    position:relative;
+
+    width:100%;
+
+    max-width:520px;
+
+    padding:30px 28px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #111827 0%,
+            #0f172a 55%,
+            #000000 100%
+        );
+
+    border:2px solid #d4af37;
+
+    border-radius:22px;
+
+    text-align:center;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.55),
+        0 0 0 1px rgba(212,175,55,.12);
+
+    transform:translateY(20px) scale(.96);
+
+    transition:transform .35s ease;
+
+}
+
+#easyAiHubInvitation.show
+.easy-ai-hub-card{
+
+    transform:translateY(0) scale(1);
+
+}
+
+.easy-ai-hub-logo{
+
+    display:block;
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:cover;
+
+    margin:0 auto 20px;
+
+    border-radius:50%;
+
+    border:3px solid #d4af37;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.easy-ai-hub-card h2{
+
+    margin-bottom:16px;
+
+    color:#ffffff;
+
+    font-size:30px;
+
+    line-height:1.2;
+
+}
+
+.easy-ai-hub-card p{
+
+    margin:0 auto 16px;
+
+    max-width:440px;
+
+    color:#d7dbe6;
+
+    font-size:17px;
+
+    line-height:1.65;
+
+}
+
+#easyAiHubBtn{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:100%;
+
+    max-width:390px;
+
+    margin-top:10px;
+
+    padding:16px 24px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #22c55e 0%,
+            #16a34a 100%
+        );
+
+    color:#ffffff;
+
+    text-decoration:none;
+
+    font-size:19px;
+
+    font-weight:700;
+
+    border-radius:12px;
+
+    box-shadow:
+        0 10px 24px rgba(22,163,74,.28);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+#easyAiHubBtn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 14px 30px rgba(22,163,74,.35);
+
+}
+
+#closeEasyAiHub{
+
+    position:absolute;
+
+    top:12px;
+
+    right:14px;
+
+    width:40px;
+
+    height:40px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.10);
+
+    color:#ffffff;
+
+    font-size:28px;
+
+    line-height:1;
+
+    cursor:pointer;
+
+}
+
+#closeEasyAiHub:hover{
+
+    background:rgba(255,255,255,.18);
+
+}
+
+
+/* ==========================================
+   EASY AI HUB - MOBILE
+========================================== */
+
+@media (max-width:768px){
+
+    #easyAiHubInvitation{
+
+        padding:16px;
+
+    }
+
+    .easy-ai-hub-card{
+
+        max-width:420px;
+
+        padding:26px 20px 22px;
+
+        border-radius:20px;
+
+    }
+
+    .easy-ai-hub-logo{
+
+        width:88px;
+
+        height:88px;
+
+        margin-bottom:16px;
+
+    }
+
+    .easy-ai-hub-card h2{
+
+        font-size:24px;
+
+    }
+
+    .easy-ai-hub-card p{
+
+        font-size:15px;
+
+        line-height:1.55;
+
+    }
+
+    #easyAiHubBtn{
+
+        font-size:17px;
+
+        padding:15px 18px;
+
+    }
+
+}

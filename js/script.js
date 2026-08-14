@@ -14,6 +14,21 @@ let countdownStarted = false;
 let videoTimer = null;
 let allowLeave = false;
 
+let easyAiHubEndTimer = null;
+
+// ======================================
+// EASY AI HUB SESSION STATE
+// ======================================
+
+let joinClicked =
+    sessionStorage.getItem("easyAiJoinClicked") === "true";
+
+let whatsappClicked =
+    sessionStorage.getItem("easyAiWhatsappClicked") === "true";
+
+let easyAiHubShown =
+    sessionStorage.getItem("easyAiHubShown") === "true";
+
 let countdownTimer = null;
 let timeRemaining = CONFIG.OFFER_DURATION; // 60 minutes in seconds
 
@@ -22,6 +37,15 @@ const countdownDisplay = document.getElementById("countdown-timer");
 const joinBtn = document.getElementById("joinBtn");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
+const easyAiHubInvitation =
+    document.getElementById("easyAiHubInvitation");
+
+const closeEasyAiHub =
+    document.getElementById("closeEasyAiHub");
+
+const easyAiHubBtn =
+    document.getElementById("easyAiHubBtn");
+
 const commentForm = document.getElementById("commentForm");
 const commentText = document.getElementById("commentText");
 const commentsList = document.getElementById("commentsList");
@@ -29,6 +53,13 @@ const commentsList = document.getElementById("commentsList");
 joinBtn.addEventListener("click", function () {
 
     allowLeave = true;
+
+    joinClicked = true;
+
+sessionStorage.setItem(
+    "easyAiJoinClicked",
+    "true"
+);
 
     window.open(
         "https://selar.com/u6g2777366?add_to_cart=1",
@@ -40,6 +71,128 @@ joinBtn.addEventListener("click", function () {
     }, 1000);
 
 });
+
+// ======================================
+// WHATSAPP ACTION TRACKING
+// ======================================
+
+whatsappBtn.addEventListener("click", function () {
+
+    whatsappClicked = true;
+
+    sessionStorage.setItem(
+        "easyAiWhatsappClicked",
+        "true"
+    );
+
+});
+
+// ======================================
+// EASY AI HUB INVITATION CONTROLS
+// ======================================
+
+function showEasyAiHubInvitation() {
+
+    if (!easyAiHubInvitation) return;
+
+    if (easyAiHubShown) return;
+
+    if (joinClicked || whatsappClicked) return;
+
+    easyAiHubShown = true;
+
+    sessionStorage.setItem(
+        "easyAiHubShown",
+        "true"
+    );
+
+    easyAiHubInvitation.classList.add("show");
+
+    easyAiHubInvitation.setAttribute(
+        "aria-hidden",
+        "false"
+    );
+
+}
+
+function hideEasyAiHubInvitation() {
+
+    if (!easyAiHubInvitation) return;
+
+    easyAiHubInvitation.classList.remove("show");
+
+    easyAiHubInvitation.setAttribute(
+        "aria-hidden",
+        "true"
+    );
+
+}
+
+if (closeEasyAiHub) {
+
+    closeEasyAiHub.addEventListener(
+        "click",
+        function () {
+
+            hideEasyAiHubInvitation();
+
+        }
+    );
+
+}
+
+if (easyAiHubBtn) {
+
+    easyAiHubBtn.addEventListener(
+        "click",
+        function () {
+
+            sessionStorage.setItem(
+                "easyAiHubJoined",
+                "true"
+            );
+
+            hideEasyAiHubInvitation();
+
+        }
+    );
+
+}
+
+// ======================================
+// EASY AI HUB DESKTOP EXIT INTENT
+// ======================================
+
+document.addEventListener(
+    "mouseout",
+    function (event) {
+
+        // Mobile/tablet devices do not have
+        // the desktop exit-intent behavior.
+        if (window.innerWidth <= 768) {
+            return;
+        }
+
+        // Only trigger after the offer has appeared.
+        if (!offerShown) {
+            return;
+        }
+
+        // Ignore movement inside the page.
+        if (event.relatedTarget || event.toElement) {
+            return;
+        }
+
+        // Trigger only when the pointer moves
+        // toward the top of the browser window.
+        if (event.clientY > 10) {
+            return;
+        }
+
+        showEasyAiHubInvitation();
+
+    }
+);
 
 // Hide webinar when page first loads
 
@@ -168,17 +321,40 @@ function createBunnyPlayer() {
 
         onEnded: function () {
 
+    console.log(
+        "Bunny Playback Ended"
+    );
+
+    clearInterval(
+        videoTimer
+    );
+
+    videoTimer = null;
+
+    // Wait 3 minutes after the webinar ends
+    // before showing the Easy AI Hub invitation.
+    if (easyAiHubEndTimer) {
+
+        clearTimeout(
+            easyAiHubEndTimer
+        );
+
+    }
+
+    easyAiHubEndTimer = setTimeout(
+        function () {
+
             console.log(
-                "Bunny Playback Ended"
+                "Easy AI Hub grace period ended"
             );
 
-            clearInterval(
-                videoTimer
-            );
-
-            videoTimer = null;
+            showEasyAiHubInvitation();
 
         },
+        3 * 60 * 1000
+    );
+
+},
 
         onTimeUpdate: function (currentTime) {
 
