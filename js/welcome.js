@@ -7,7 +7,22 @@ const container = document.querySelector(".container");
 const countdownNumber = document.getElementById("countdown-number");
 const loadingMessage = document.getElementById("loading-message");
 
-container.style.display = "none";
+const webinarCompleted =
+    localStorage.getItem("webinarCompleted") === "true";
+
+if (webinarCompleted) {
+
+    welcomeScreen.style.display = "none";
+
+    loadingScreen.style.display = "none";
+
+    container.style.display = "block";
+
+} else {
+
+    container.style.display = "none";
+
+}
 
 beginBtn.addEventListener("click", function(){
 

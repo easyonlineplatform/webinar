@@ -266,26 +266,66 @@ function createBunnyPlayer() {
 
         onReady: function () {
 
-            console.log(
-                "Bunny Provider Ready"
+    console.log(
+        "Bunny Provider Ready"
+    );
+
+    VideoEngine.initialize(
+        "bunny",
+        BunnyProvider
+    );
+
+    console.log(
+        "Bunny Video Engine Ready"
+    );
+
+    const webinarCompleted =
+        localStorage.getItem("webinarCompleted") === "true";
+
+    if (webinarCompleted) {
+
+        console.log(
+            "Completed webinar detected - restoring exact end position"
+        );
+
+        const completedPosition =
+            Number(
+                localStorage.getItem(
+                    "webinarCompletedPosition"
+                )
             );
 
-            VideoEngine.initialize(
-                "bunny",
-                BunnyProvider
+        if (
+            Number.isFinite(completedPosition) &&
+            completedPosition >= 0
+        ) {
+
+            VideoEngine.seekTo(
+                completedPosition
             );
 
-            console.log(
-                "Bunny Video Engine Ready"
+            checkVideoTime(
+                completedPosition
             );
 
-            // Immediately evaluate the webinar state
-            // using Bunny's real current position.
+        } else {
+
             checkVideoTime();
 
-            VideoEngine.play();
+        }
 
-        },
+        VideoEngine.pause();
+
+    } else {
+
+        // Normal first-time/incomplete visitor
+        checkVideoTime();
+
+        VideoEngine.play();
+
+    }
+
+},
 
         onPlay: function () {
 
@@ -331,6 +371,18 @@ function createBunnyPlayer() {
 
     videoTimer = null;
 
+    localStorage.setItem(
+    "webinarCompleted",
+    "true"
+);
+
+localStorage.setItem(
+    "webinarCompletedPosition",
+    Math.floor(
+        BunnyProvider.getCurrentTime()
+    )
+);
+
     // Wait 3 minutes after the webinar ends
     // before showing the Easy AI Hub invitation.
     if (easyAiHubEndTimer) {
@@ -368,6 +420,24 @@ function createBunnyPlayer() {
         },
         { once: true }
     );
+
+}
+
+// ======================================
+// COMPLETED WEBINAR RETURN STATE
+// ======================================
+
+if (
+    localStorage.getItem("webinarCompleted") === "true"
+) {
+
+    console.log(
+        "Completed webinar detected - restoring session"
+    );
+
+    createBunnyPlayer();
+
+    resumeOfferCountdown();
 
 }
 
