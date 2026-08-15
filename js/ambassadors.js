@@ -19,15 +19,27 @@ const AMBASSADORS = {
 
     // Ambassador B - YEBOAH DOROTHY
     B: {
-        selarLink:
-            "https://selar.com/p/u6g2777366?affiliate=pld5837u7k",
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=pld5837u7k",
 
-        whatsappNumber:
-            "233247311955",
+    whatsappNumber:
+        "233247311955",
 
-        whatsappGroupLink:
-            "https://chat.whatsapp.com/JhDFFAOM2CH7wbeB726SN9?s=sh&p=a&mlu=4"
-    }
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/JhDFFAOM2CH7wbeB726SN9?s=sh&p=a&mlu=4"
+},
+
+// Ambassador C - Boateng Yeboah
+C: {
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=14188fq15g",
+
+    whatsappNumber:
+        "233209152949",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/LWfFW3jNO8yCwo1pf72vja?s=cl&p=a&ilr=1"
+}
 
 };
 
