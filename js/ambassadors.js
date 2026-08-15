@@ -5,18 +5,31 @@
 
 const AMBASSADORS = {
 
-    // Temporary test ambassador.
-    // We will add the real details later.
-
+    // Ambassador A
     A: {
-        selarLink: "https://selar.com/u6g2777366?add_to_cart=1",
-        whatsappNumber: "233592079372",
+        selarLink:
+            "https://selar.com/u6g2777366?add_to_cart=1",
+
+        whatsappNumber:
+            "233592079372",
+
         whatsappGroupLink:
-    "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
+            "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
+    },
+
+    // Ambassador B - YEBOAH DOROTHY
+    B: {
+        selarLink:
+            "https://selar.com/p/u6g2777366?affiliate=pld5837u7k",
+
+        whatsappNumber:
+            "233247311955",
+
+        whatsappGroupLink:
+            "https://chat.whatsapp.com/JhDFFAOM2CH7wbeB726SN9?s=sh&p=a&mlu=4"
     }
 
 };
-
 
 // ===========================================
 // AMBASSADOR IDENTIFICATION
