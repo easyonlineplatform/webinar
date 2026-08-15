@@ -71,3 +71,29 @@ function getAmbassadorConfig() {
     ];
 
 }
+
+// ===========================================
+// REMEMBER SELECTED AMBASSADOR
+// ===========================================
+
+function getSelectedAmbassadorKey() {
+
+    const currentKey =
+        getAmbassadorKey();
+
+    if (currentKey) {
+
+        localStorage.setItem(
+            "selectedAmbassador",
+            currentKey
+        );
+
+        return currentKey;
+
+    }
+
+    return localStorage.getItem(
+        "selectedAmbassador"
+    );
+
+}
