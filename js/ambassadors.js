@@ -11,7 +11,8 @@ const AMBASSADORS = {
     A: {
         selarLink: "https://selar.com/u6g2777366?add_to_cart=1",
         whatsappNumber: "233592079372",
-        whatsappGroupLink: ""
+        whatsappGroupLink:
+    "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
     }
 
 };

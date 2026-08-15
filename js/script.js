@@ -59,6 +59,17 @@ if (activeAmbassador) {
 
 }
 
+// ======================================
+// AMBASSADOR GROUP DESTINATION
+// ======================================
+
+if (activeAmbassador) {
+
+    easyAiHubBtn.href =
+        activeAmbassador.whatsappGroupLink;
+
+}
+
 const easyAiHubInvitation =
     document.getElementById("easyAiHubInvitation");
 
