@@ -37,6 +37,19 @@ const countdownDisplay = document.getElementById("countdown-timer");
 const joinBtn = document.getElementById("joinBtn");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
+const easyAiHubInvitation =
+    document.getElementById("easyAiHubInvitation");
+
+const closeEasyAiHub =
+    document.getElementById("closeEasyAiHub");
+
+const easyAiHubBtn =
+    document.getElementById("easyAiHubBtn");
+
+const commentForm = document.getElementById("commentForm");
+const commentText = document.getElementById("commentText");
+const commentsList = document.getElementById("commentsList");
+
 // ======================================
 // AMBASSADOR WHATSAPP DESTINATION
 // ======================================
@@ -69,19 +82,6 @@ if (activeAmbassador) {
         activeAmbassador.whatsappGroupLink;
 
 }
-
-const easyAiHubInvitation =
-    document.getElementById("easyAiHubInvitation");
-
-const closeEasyAiHub =
-    document.getElementById("closeEasyAiHub");
-
-const easyAiHubBtn =
-    document.getElementById("easyAiHubBtn");
-
-const commentForm = document.getElementById("commentForm");
-const commentText = document.getElementById("commentText");
-const commentsList = document.getElementById("commentsList");
 
 joinBtn.addEventListener("click", function () {
 
