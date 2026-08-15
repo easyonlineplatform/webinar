@@ -494,6 +494,17 @@ function startOfferCountdown() {
 
     if (countdownStarted) return;
 
+    if (
+        localStorage.getItem("offerExpired") === "true"
+    ) {
+
+        countdownDisplay.textContent = "00:00";
+
+        expireOffer();
+
+        return;
+    }
+
     countdownStarted = true;
 
     let endTime = localStorage.getItem("offerEndTime");
@@ -541,20 +552,64 @@ expireOffer();
 
 function resumeOfferCountdown() {
 
-    const savedEndTime = localStorage.getItem("offerEndTime");
+    const savedEndTime =
+        localStorage.getItem("offerEndTime");
 
-    if (!savedEndTime) return;
+    const offerExpired =
+        localStorage.getItem("offerExpired") === "true";
 
-    timeRemaining = Math.max(
-        0,
-        Math.floor((savedEndTime - Date.now()) / 1000)
-    );
 
-    if (timeRemaining > 0) {
+    // Offer was already explicitly expired.
+    if (offerExpired) {
 
-        startOfferCountdown();
+        timeRemaining = 0;
+
+        countdownDisplay.textContent = "00:00";
+
+        expireOffer();
+
+        return;
 
     }
+
+
+    // There is no saved offer deadline yet.
+    if (!savedEndTime) {
+
+        return;
+
+    }
+
+
+    // Calculate the actual remaining time.
+    timeRemaining = Math.max(
+        0,
+        Math.floor(
+            (savedEndTime - Date.now()) / 1000
+        )
+    );
+
+
+    // The deadline has passed, even though
+    // offerExpired had not been recorded yet.
+    if (timeRemaining <= 0) {
+
+        localStorage.setItem(
+            "offerExpired",
+            "true"
+        );
+
+        countdownDisplay.textContent = "00:00";
+
+        expireOffer();
+
+        return;
+
+    }
+
+
+    // Offer is still active.
+    startOfferCountdown();
 
 }
 
