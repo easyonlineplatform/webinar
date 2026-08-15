@@ -37,6 +37,28 @@ const countdownDisplay = document.getElementById("countdown-timer");
 const joinBtn = document.getElementById("joinBtn");
 const whatsappBtn = document.getElementById("whatsappBtn");
 
+// ======================================
+// AMBASSADOR WHATSAPP DESTINATION
+// ======================================
+
+const activeAmbassador =
+    getActiveAmbassador();
+
+const whatsappMessage =
+    "Hi! I'm watching your Easy Online Digital Training webinar and I have a question before enrolling.";
+
+if (activeAmbassador) {
+
+    whatsappBtn.href =
+        "https://wa.me/" +
+        activeAmbassador.whatsappNumber +
+        "?text=" +
+        encodeURIComponent(
+            whatsappMessage
+        );
+
+}
+
 const easyAiHubInvitation =
     document.getElementById("easyAiHubInvitation");
 
