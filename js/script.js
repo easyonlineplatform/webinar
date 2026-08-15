@@ -62,7 +62,7 @@ sessionStorage.setItem(
 );
 
     window.open(
-        "https://selar.com/u6g2777366?add_to_cart=1",
+        getActiveAmbassador()?.selarLink,
         "_blank"
     );
 

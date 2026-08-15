@@ -97,3 +97,41 @@ function getSelectedAmbassadorKey() {
     );
 
 }
+
+// ===========================================
+// GET ACTIVE AMBASSADOR
+// ===========================================
+
+function getActiveAmbassador() {
+
+    const ambassadorKey =
+        getSelectedAmbassadorKey();
+
+    if (!ambassadorKey) {
+
+    return DEFAULT_CONFIG;
+
+}
+
+    return AMBASSADORS[
+        ambassadorKey
+    ] || null;
+
+}
+
+// ===========================================
+// DEFAULT WEBSITE CONFIGURATION
+// ===========================================
+
+const DEFAULT_CONFIG = {
+
+    selarLink:
+        "https://selar.com/u6g2777366?add_to_cart=1",
+
+    whatsappNumber:
+        "233592079372",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
+
+};
