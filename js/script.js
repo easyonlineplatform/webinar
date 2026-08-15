@@ -62,7 +62,7 @@ sessionStorage.setItem(
 );
 
     window.open(
-        getActiveAmbassador()?.selarLink,
+        getActiveAmbassador().selarLink,
         "_blank"
     );
 
