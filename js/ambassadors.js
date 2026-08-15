@@ -9,7 +9,7 @@ const AMBASSADORS = {
     // We will add the real details later.
 
     A: {
-        selarLink: "",
+        selarLink: "https://selar.com/u6g2777366?add_to_cart=1",
         whatsappNumber: "",
         whatsappGroupLink: ""
     }
