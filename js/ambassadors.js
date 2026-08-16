@@ -73,16 +73,24 @@ janetamentor: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/CKptIKsRCr92Hes3N3dOGK?s=cl&p=a&ilr=4"
 
+},
+
+// Kuto Priscilla
+kutopriscilla: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=1634715655&add_to_cart=1",
+
+    whatsappNumber:
+        "233531457612",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/GhFQ3dJ5Epp7T5Ax8FfC65?s=cl&p=a&ilr=1"
+
 }
 
+
 };
-
-
-
-
-
-
-
 
 // ===========================================
 // DEFAULT WEBSITE CONFIGURATION
