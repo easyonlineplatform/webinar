@@ -115,6 +115,20 @@ nelsonkwao: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/JyCuQtWl8Vj9jD7viimcUw?s=cl&p=a&mlu=4"
 
+},
+
+// Andrews Allotey
+andrewsallotey: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=87h4c15991&add_to_cart=1",
+
+    whatsappNumber:
+        "233503128067",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/CSWbGbKZXoj2bWym1Qwo87?s=sh&p=a&mlu=0&ilr=0"
+
 }
 
 
