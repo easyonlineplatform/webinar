@@ -101,6 +101,20 @@ abdulsomed: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/EGh527aahju34KHjhmidCi?s=cl&p=a&ilr=1"
 
+},
+
+// Nelson Kwao
+nelsonkwao: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=c1022767ed&add_to_cart=1",
+
+    whatsappNumber:
+        "233277678515",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/JyCuQtWl8Vj9jD7viimcUw?s=cl&p=a&mlu=4"
+
 }
 
 
