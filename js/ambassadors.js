@@ -129,8 +129,21 @@ andrewsallotey: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/CSWbGbKZXoj2bWym1Qwo87?s=sh&p=a&mlu=0&ilr=0"
 
-}
+},
 
+// Oppong Ahmed
+oppongahmed: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=24rc771dkc&add_to_cart=1",
+
+    whatsappNumber:
+        "233598016006",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/GSrG3h1svMDE0yQXLJNqdK?s=cl&p=i&mlu=0&ilr=0&amv=1"
+
+}
 
 };
 
