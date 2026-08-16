@@ -14,20 +14,57 @@ let countdownStarted = false;
 let videoTimer = null;
 let allowLeave = false;
 
+// ======================================
+// AMBASSADOR PROFILE SWITCHING
+// ======================================
+
+window.addEventListener("hashchange", function () {
+
+    allowLeave = true;
+
+    window.location.reload();
+
+});
+
 let easyAiHubEndTimer = null;
+
+// ======================================
+// ACTIVE PROFILE STORAGE NAMESPACE
+// ======================================
+
+const activeProfileKey =
+    getAmbassadorKey() || "main";
+
+function profileStorageKey(key) {
+
+    return `${key}_${activeProfileKey}`;
+
+}
+
+function profileSessionKey(key) {
+
+    return `${key}_${activeProfileKey}`;
+
+}
 
 // ======================================
 // EASY AI HUB SESSION STATE
 // ======================================
 
 let joinClicked =
-    sessionStorage.getItem("easyAiJoinClicked") === "true";
+    sessionStorage.getItem(
+        profileSessionKey("easyAiJoinClicked")
+    ) === "true";
 
 let whatsappClicked =
-    sessionStorage.getItem("easyAiWhatsappClicked") === "true";
+    sessionStorage.getItem(
+        profileSessionKey("easyAiWhatsappClicked")
+    ) === "true";
 
 let easyAiHubShown =
-    sessionStorage.getItem("easyAiHubShown") === "true";
+    sessionStorage.getItem(
+        profileSessionKey("easyAiHubShown")
+    ) === "true";
 
 let countdownTimer = null;
 let timeRemaining = CONFIG.OFFER_DURATION; // 60 minutes in seconds
@@ -90,7 +127,7 @@ joinBtn.addEventListener("click", function () {
     joinClicked = true;
 
 sessionStorage.setItem(
-    "easyAiJoinClicked",
+    profileSessionKey("easyAiJoinClicked"),
     "true"
 );
 
@@ -114,9 +151,9 @@ whatsappBtn.addEventListener("click", function () {
     whatsappClicked = true;
 
     sessionStorage.setItem(
-        "easyAiWhatsappClicked",
-        "true"
-    );
+    profileSessionKey("easyAiWhatsappClicked"),
+    "true"
+);
 
 });
 
@@ -135,9 +172,9 @@ function showEasyAiHubInvitation() {
     easyAiHubShown = true;
 
     sessionStorage.setItem(
-        "easyAiHubShown",
-        "true"
-    );
+    profileSessionKey("easyAiHubShown"),
+    "true"
+);
 
     easyAiHubInvitation.classList.add("show");
 
@@ -313,7 +350,9 @@ function createBunnyPlayer() {
     );
 
     const webinarCompleted =
-        localStorage.getItem("webinarCompleted") === "true";
+    localStorage.getItem(
+        profileStorageKey("webinarCompleted")
+    ) === "true";
 
     if (webinarCompleted) {
 
@@ -324,7 +363,7 @@ function createBunnyPlayer() {
         const completedPosition =
             Number(
                 localStorage.getItem(
-                    "webinarCompletedPosition"
+                    profileStorageKey("webinarCompletedPosition")
                 )
             );
 
@@ -405,12 +444,12 @@ function createBunnyPlayer() {
     videoTimer = null;
 
     localStorage.setItem(
-    "webinarCompleted",
+    profileStorageKey("webinarCompleted"),
     "true"
 );
 
 localStorage.setItem(
-    "webinarCompletedPosition",
+    profileStorageKey("webinarCompletedPosition"),
     Math.floor(
         BunnyProvider.getCurrentTime()
     )
@@ -461,7 +500,7 @@ localStorage.setItem(
 // ======================================
 
 if (
-    localStorage.getItem("webinarCompleted") === "true"
+    localStorage.getItem(profileStorageKey("webinarCompleted")) === "true"
 ) {
 
     console.log(
@@ -486,9 +525,9 @@ function checkVideoTime(currentTime) {
     }
 
     localStorage.setItem(
-        "webinarPosition",
-        Math.floor(currentTime)
-    );
+    profileStorageKey("webinarPosition"),
+    Math.floor(currentTime)
+);
 
     if (currentTime >= CONFIG.OFFER_TIME && !offerShown) {
 
@@ -500,7 +539,11 @@ offerWrapper.classList.add("show-wrapper");
 
 offerCard.classList.add("show-offer");
 
-    if (localStorage.getItem("offerExpired") === "true") {
+    if (
+    localStorage.getItem(
+        profileStorageKey("offerExpired")
+    ) === "true"
+) {
 
         countdownDisplay.textContent = "00:00";
 
@@ -528,7 +571,9 @@ function startOfferCountdown() {
     if (countdownStarted) return;
 
     if (
-        localStorage.getItem("offerExpired") === "true"
+        localStorage.getItem(
+    profileStorageKey("offerExpired")
+) === "true"
     ) {
 
         countdownDisplay.textContent = "00:00";
@@ -540,13 +585,18 @@ function startOfferCountdown() {
 
     countdownStarted = true;
 
-    let endTime = localStorage.getItem("offerEndTime");
+    let endTime = localStorage.getItem(
+    profileStorageKey("offerEndTime")
+)
 
 if (!endTime) {
 
     endTime = Date.now() + (timeRemaining * 1000);
 
-    localStorage.setItem("offerEndTime", endTime);
+    localStorage.setItem(
+    profileStorageKey("offerEndTime"),
+    endTime
+);
 
 }
 
@@ -569,7 +619,10 @@ timeRemaining = Math.max(
 
     countdownDisplay.textContent = "00:00";
 
-    localStorage.setItem("offerExpired", "true");
+    localStorage.setItem(
+    profileStorageKey("offerExpired"),
+    "true"
+);
 
 expireOffer();
 
@@ -586,10 +639,14 @@ expireOffer();
 function resumeOfferCountdown() {
 
     const savedEndTime =
-        localStorage.getItem("offerEndTime");
+        localStorage.getItem(
+    profileStorageKey("offerEndTime")
+)
 
     const offerExpired =
-        localStorage.getItem("offerExpired") === "true";
+        localStorage.getItem(
+    profileStorageKey("offerExpired")
+) === "true"
 
 
     // Offer was already explicitly expired.
@@ -628,9 +685,9 @@ function resumeOfferCountdown() {
     if (timeRemaining <= 0) {
 
         localStorage.setItem(
-            "offerExpired",
-            "true"
-        );
+    profileStorageKey("offerExpired"),
+    "true"
+);
 
         countdownDisplay.textContent = "00:00";
 

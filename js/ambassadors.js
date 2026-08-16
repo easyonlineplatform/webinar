@@ -5,43 +5,55 @@
 
 const AMBASSADORS = {
 
-    // Ambassador A
-    A: {
+    // Yeboah Dorothy
+    yeboahdorothy: {
+
         selarLink:
-            "https://selar.com/u6g2777366?add_to_cart=1",
+    "https://selar.com/p/u6g2777366?affiliate=pld5837u7k&add_to_cart=1",
 
         whatsappNumber:
-            "233592079372",
+            "233247311955",
 
         whatsappGroupLink:
-            "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
+            "https://chat.whatsapp.com/JhDFFAOM2CH7wbeB726SN9?s=sh&p=a&mlu=4"
+
     },
 
-    // Ambassador B - YEBOAH DOROTHY
-    B: {
-    selarLink:
-        "https://selar.com/p/u6g2777366?affiliate=pld5837u7k",
 
-    whatsappNumber:
-        "233247311955",
+    // Boateng Yeboah
+    boatengyeboah: {
 
-    whatsappGroupLink:
-        "https://chat.whatsapp.com/JhDFFAOM2CH7wbeB726SN9?s=sh&p=a&mlu=4"
-},
+        selarLink:
+    "https://selar.com/u6g2777366?affiliate=14188fq15g&add_to_cart=1",
 
-// Ambassador C - Boateng Yeboah
-C: {
-    selarLink:
-        "https://selar.com/p/u6g2777366?affiliate=14188fq15g",
+        whatsappNumber:
+            "233209152949",
 
-    whatsappNumber:
-        "233209152949",
+        whatsappGroupLink:
+            "https://chat.whatsapp.com/LWfFW3jNO8yCwo1pf72vja?s=cl&p=a&ilr=1"
 
-    whatsappGroupLink:
-        "https://chat.whatsapp.com/LWfFW3jNO8yCwo1pf72vja?s=cl&p=a&ilr=1"
-}
+    }
 
 };
+
+
+// ===========================================
+// DEFAULT WEBSITE CONFIGURATION
+// ===========================================
+
+const DEFAULT_CONFIG = {
+
+    selarLink:
+        "https://selar.com/u6g2777366?add_to_cart=1",
+
+    whatsappNumber:
+        "233592079372",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
+
+};
+
 
 // ===========================================
 // AMBASSADOR IDENTIFICATION
@@ -53,7 +65,7 @@ function getAmbassadorKey() {
         window.location.hash
             .replace("#", "")
             .trim()
-            .toUpperCase();
+            .toLowerCase();
 
     if (!hash) {
 
@@ -99,65 +111,22 @@ function getAmbassadorConfig() {
 }
 
 // ===========================================
-// REMEMBER SELECTED AMBASSADOR
-// ===========================================
-
-function getSelectedAmbassadorKey() {
-
-    const currentKey =
-        getAmbassadorKey();
-
-    if (currentKey) {
-
-        localStorage.setItem(
-            "selectedAmbassador",
-            currentKey
-        );
-
-        return currentKey;
-
-    }
-
-    return localStorage.getItem(
-        "selectedAmbassador"
-    );
-
-}
-
-// ===========================================
-// GET ACTIVE AMBASSADOR
+// GET ACTIVE PROFILE
 // ===========================================
 
 function getActiveAmbassador() {
 
     const ambassadorKey =
-        getSelectedAmbassadorKey();
+        getAmbassadorKey();
 
     if (!ambassadorKey) {
 
-    return DEFAULT_CONFIG;
+        return DEFAULT_CONFIG;
 
-}
+    }
 
     return AMBASSADORS[
         ambassadorKey
-    ] || null;
+    ] || DEFAULT_CONFIG;
 
 }
-
-// ===========================================
-// DEFAULT WEBSITE CONFIGURATION
-// ===========================================
-
-const DEFAULT_CONFIG = {
-
-    selarLink:
-        "https://selar.com/u6g2777366?add_to_cart=1",
-
-    whatsappNumber:
-        "233592079372",
-
-    whatsappGroupLink:
-        "https://chat.whatsapp.com/FJrmaxdtEOO2ZHDltz4QDx?s=cl&p=a&ilr=4"
-
-};

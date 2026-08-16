@@ -7,8 +7,13 @@ const container = document.querySelector(".container");
 const countdownNumber = document.getElementById("countdown-number");
 const loadingMessage = document.getElementById("loading-message");
 
+const welcomeProfileKey =
+    getAmbassadorKey() || "main";
+
 const webinarCompleted =
-    localStorage.getItem("webinarCompleted") === "true";
+    localStorage.getItem(
+        `webinarCompleted_${welcomeProfileKey}`
+    ) === "true";
 
 if (webinarCompleted) {
 
@@ -80,7 +85,11 @@ createBunnyPlayer();
 
 resumeOfferCountdown();
 
-    if (localStorage.getItem("offerExpired") === "true") {
+    if (
+    localStorage.getItem(
+        `offerExpired_${welcomeProfileKey}`
+    ) === "true"
+) {
 
     expireOffer();
 
