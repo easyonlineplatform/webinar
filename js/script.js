@@ -148,12 +148,18 @@ sessionStorage.setItem(
 
 whatsappBtn.addEventListener("click", function () {
 
+    allowLeave = true;
+
     whatsappClicked = true;
 
     sessionStorage.setItem(
-    profileSessionKey("easyAiWhatsappClicked"),
-    "true"
-);
+        profileSessionKey("easyAiWhatsappClicked"),
+        "true"
+    );
+
+    setTimeout(function () {
+        allowLeave = false;
+    }, 1000);
 
 });
 
@@ -217,12 +223,18 @@ if (easyAiHubBtn) {
         "click",
         function () {
 
+            allowLeave = true;
+
             sessionStorage.setItem(
-                "easyAiHubJoined",
+                profileSessionKey("easyAiHubJoined"),
                 "true"
             );
 
             hideEasyAiHubInvitation();
+
+            setTimeout(function () {
+                allowLeave = false;
+            }, 1000);
 
         }
     );
