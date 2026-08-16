@@ -157,6 +157,20 @@ alhassanyussif: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/HQjkKiEYGDNFRS60RS2CNt?s=cl&p=a&ilr=0"
 
+},
+
+// Sackey Janet
+sackeyjanet: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=56s12fis77&add_to_cart=1",
+
+    whatsappNumber:
+        "233277023377",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/Klopl4YoORi0ExvF0SVLoX?s=cl&p=a&ilr=1"
+
 }
 
 };
