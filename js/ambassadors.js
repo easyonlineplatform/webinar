@@ -185,6 +185,20 @@ kwameacheampong: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/HUBbJ7h04A68vwXANUS1ut?s=cl&p=a&ilr=4"
 
+},
+
+// Issahaku Abdul Hafiz
+issahakuabdulhafiz: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=46xz666620&add_to_cart=1",
+
+    whatsappNumber:
+        "233536232129",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/ItqNthKljG2GI2pN9fcfEF?mode=gi_t"
+
 }
 
 };
