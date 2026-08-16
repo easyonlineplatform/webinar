@@ -171,6 +171,20 @@ sackeyjanet: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/Klopl4YoORi0ExvF0SVLoX?s=cl&p=a&ilr=1"
 
+},
+
+// Kwame Acheampong
+kwameacheampong: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=88b1875684&add_to_cart=1",
+
+    whatsappNumber:
+        "233505503028",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/HUBbJ7h04A68vwXANUS1ut?s=cl&p=a&ilr=4"
+
 }
 
 };
