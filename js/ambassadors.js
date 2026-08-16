@@ -59,9 +59,29 @@ kasimbaraka: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/Euada8jyqIaHveOj4tigQy?s=cl&p=a&ilr=4"
 
+    },
+    
+    // Janet Amentor
+janetamentor: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=p1v698k6d1&add_to_cart=1",
+
+    whatsappNumber:
+        "233547992407",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/CKptIKsRCr92Hes3N3dOGK?s=cl&p=a&ilr=4"
+
 }
 
 };
+
+
+
+
+
+
 
 
 // ===========================================
