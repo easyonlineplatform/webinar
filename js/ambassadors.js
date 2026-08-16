@@ -87,6 +87,20 @@ kutopriscilla: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/GhFQ3dJ5Epp7T5Ax8FfC65?s=cl&p=a&ilr=1"
 
+},
+
+// Abdul-Somed
+abdulsomed: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=15913l2uc5&add_to_cart=1",
+
+    whatsappNumber:
+        "233550484601",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/EGh527aahju34KHjhmidCi?s=cl&p=a&ilr=1"
+
 }
 
 
