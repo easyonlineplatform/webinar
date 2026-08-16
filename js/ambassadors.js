@@ -45,7 +45,21 @@ const AMBASSADORS = {
         whatsappGroupLink:
             "https://chat.whatsapp.com/LUuJUL84G2yGWpo3DTmEFn?s=cl&p=a&ilr=4"
 
-    }
+    },
+
+    // Kasim Baraka
+kasimbaraka: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=24r57d5u11&add_to_cart=1",
+
+    whatsappNumber:
+        "233592129008",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/Euada8jyqIaHveOj4tigQy?s=cl&p=a&ilr=4"
+
+}
 
 };
 
