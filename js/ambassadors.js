@@ -20,17 +20,30 @@ const AMBASSADORS = {
     },
 
 
-    // Boateng Yeboah
-    boatengyeboah: {
+        boatengyeboah: {
 
         selarLink:
-    "https://selar.com/u6g2777366?affiliate=14188fq15g&add_to_cart=1",
+            "https://selar.com/u6g2777366?affiliate=14188fq15g&add_to_cart=1",
 
         whatsappNumber:
             "233209152949",
 
         whatsappGroupLink:
             "https://chat.whatsapp.com/LWfFW3jNO8yCwo1pf72vja?s=cl&p=a&ilr=1"
+
+    },
+
+    // Michelle Nyarko
+    michellenyarko: {
+
+        selarLink:
+            "https://selar.com/p/u6g2777366?affiliate=251zo927z7&add_to_cart=1",
+
+        whatsappNumber:
+            "233262993147",
+
+        whatsappGroupLink:
+            "https://chat.whatsapp.com/LUuJUL84G2yGWpo3DTmEFn?s=cl&p=a&ilr=4"
 
     }
 
