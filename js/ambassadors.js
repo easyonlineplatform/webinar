@@ -143,6 +143,20 @@ oppongahmed: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/GSrG3h1svMDE0yQXLJNqdK?s=cl&p=i&mlu=0&ilr=0&amv=1"
 
+},
+
+// Alhassan Yussif
+alhassanyussif: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=0877651270&add_to_cart=1",
+
+    whatsappNumber:
+        "233504507693",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/HQjkKiEYGDNFRS60RS2CNt?s=cl&p=a&ilr=0"
+
 }
 
 };
