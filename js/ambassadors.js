@@ -199,6 +199,20 @@ issahakuabdulhafiz: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/ItqNthKljG2GI2pN9fcfEF?mode=gi_t"
 
+},
+
+// Michael Kumah
+michaelkumah: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=m8392u74ju&add_to_cart=1",
+
+    whatsappNumber:
+        "233204900149",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/DrVKN5oHFU29rIw6KropPL"
+
 }
 
 };
