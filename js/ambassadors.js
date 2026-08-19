@@ -213,6 +213,20 @@ michaelkumah: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/DrVKN5oHFU29rIw6KropPL"
 
+},
+
+// Prince Larbi
+princelarbi: {
+
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=7367xu60k9&add_to_cart=1",
+
+    whatsappNumber:
+        "233202139239",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/D7vgnesLwac6QKfiPng98x?s=cl&p=a&mlu=0"
+
 }
 
 };
