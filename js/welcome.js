@@ -15,6 +15,11 @@ const webinarCompleted =
         `webinarCompleted_${welcomeProfileKey}`
     ) === "true";
 
+    const webinarStarted =
+    localStorage.getItem(
+        `webinarStarted_${welcomeProfileKey}`
+    ) === "true";
+
 if (webinarCompleted) {
 
     welcomeScreen.style.display = "none";
@@ -23,13 +28,54 @@ if (webinarCompleted) {
 
     container.style.display = "block";
 
+} else if (webinarStarted) {
+
+    welcomeScreen.style.display = "flex";
+
+    loadingScreen.style.display = "none";
+
+    container.style.display = "none";
+
+    welcomeScreen.querySelector("h1").textContent =
+        "Welcome Back!";
+
+    welcomeScreen.querySelector("p").textContent =
+        "Continue your training from where you stopped.";
+
+    beginBtn.textContent =
+         "👉 Tap Here to Continue Watching";
+
 } else {
+
+    welcomeScreen.style.display = "flex";
+
+    loadingScreen.style.display = "none";
 
     container.style.display = "none";
 
 }
 
 beginBtn.addEventListener("click", function(){
+
+    localStorage.setItem(
+    `webinarStarted_${welcomeProfileKey}`,
+    "true"
+);
+
+    if (webinarStarted) {
+
+        welcomeScreen.style.display = "none";
+
+        loadingScreen.style.display = "none";
+
+        container.style.display = "block";
+
+        createBunnyPlayer();
+
+        resumeOfferCountdown();
+
+        return;
+    }
 
     // Hide Welcome Screen
     welcomeScreen.style.display = "none";

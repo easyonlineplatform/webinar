@@ -402,12 +402,44 @@ function createBunnyPlayer() {
 
     } else {
 
-        // Normal first-time/incomplete visitor
+    // Check whether this visitor has already started
+    // the webinar and has a saved position.
+    const webinarStarted =
+        localStorage.getItem(
+            profileStorageKey("webinarStarted")
+        ) === "true";
+
+    const savedPosition =
+        Number(
+            localStorage.getItem(
+                profileStorageKey("webinarPosition")
+            )
+        );
+
+    if (
+        webinarStarted &&
+        Number.isFinite(savedPosition) &&
+        savedPosition > 5
+    ) {
+
+        console.log(
+            "Returning incomplete visitor - restoring saved position"
+        );
+
+        VideoEngine.seekTo(savedPosition);
+
+        checkVideoTime(savedPosition);
+
+    } else {
+
+        // Normal first-time visitor
         checkVideoTime();
 
-        VideoEngine.play();
-
     }
+
+    VideoEngine.play();
+
+}
 
 },
 
