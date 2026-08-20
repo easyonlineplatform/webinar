@@ -7,12 +7,6 @@ const container = document.querySelector(".container");
 const countdownNumber = document.getElementById("countdown-number");
 const loadingMessage = document.getElementById("loading-message");
 
-// Detect the Android Google Search app's in-app browser.
-// This does NOT target normal Chrome, Firefox, Edge, etc.
-const isGoogleAndroidInApp =
-    /Android/i.test(navigator.userAgent) &&
-    /GSA\//i.test(navigator.userAgent);
-
 const welcomeProfileKey =
     getAmbassadorKey() || "main";
 
@@ -67,31 +61,6 @@ beginBtn.addEventListener("click", function(){
         `webinarStarted_${welcomeProfileKey}`,
         "true"
     );
-
-    // ==========================================
-    // GOOGLE ANDROID IN-APP EXPERIENCE
-    // ==========================================
-    // For the Google Search app only:
-    // skip the countdown and start the webinar
-    // immediately after the visitor's button tap.
-    if (isGoogleAndroidInApp) {
-
-        console.log(
-            "Google Android in-app detected - starting webinar immediately"
-        );
-
-        welcomeScreen.style.display = "none";
-
-        loadingScreen.style.display = "none";
-
-        container.style.display = "block";
-
-        createBunnyPlayer();
-
-        resumeOfferCountdown();
-
-        return;
-    }
 
     // ==========================================
     // NORMAL BROWSER EXPERIENCE
