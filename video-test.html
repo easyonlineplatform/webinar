@@ -37,6 +37,10 @@
 
     <h1>Easy AI Training HLS Test</h1>
 
+    <button id="startTest">
+    👉 Tap to Start Training
+</button>
+
     <video
         id="testVideo"
         controls
@@ -54,6 +58,7 @@
     <script>
 
         const video = document.getElementById("testVideo");
+        const startTest = document.getElementById("startTest");
         const status = document.getElementById("status");
 
         const hlsUrl =
@@ -103,6 +108,27 @@
                 "This browser does not support HLS playback.";
 
         }
+
+        startTest.addEventListener("click", async function () {
+
+    console.log("Start button clicked");
+
+    try {
+
+        await video.play();
+
+        status.textContent =
+            "Playback started successfully.";
+
+    } catch (error) {
+
+        console.error("Playback failed:", error);
+
+        status.textContent =
+            "Playback failed: " + error.name;
+    }
+
+});
 
     </script>
 
