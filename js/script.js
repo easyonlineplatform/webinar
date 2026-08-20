@@ -319,7 +319,7 @@ function createBunnyPlayer() {
     iframe.id = "webinarPlayer";
 
     iframe.src =
-"https://player.mediadelivery.net/embed/722085/a8b08dd7-ebf5-417e-b793-a7f9ec72cf55?preload=true&autoplay=true";
+"https://player.mediadelivery.net/embed/722085/a8b08dd7-ebf5-417e-b793-a7f9ec72cf55?preload=true";
 
     iframe.loading = "lazy";
 
