@@ -15,6 +15,157 @@ let videoTimer = null;
 let allowLeave = false;
 
 // ======================================
+// MOBILE FULLSCREEN LANDSCAPE VIEW
+// ======================================
+
+const videoContainer =
+    document.getElementById("videoContainer");
+
+const fullscreenLandscapeBtn =
+    document.getElementById(
+        "fullscreenLandscapeBtn"
+    );
+
+
+async function enterFullscreenLandscape() {
+
+    if (!videoContainer) {
+
+        console.error(
+            "Fullscreen: video container not found."
+        );
+
+        return;
+    }
+
+
+    try {
+
+    // Check whether this browser allows fullscreen.
+    if (!document.fullscreenEnabled) {
+
+        console.warn(
+            "Fullscreen is not available in this browser."
+        );
+
+        return;
+
+    }
+
+    // Enter fullscreen first.
+    if (!document.fullscreenElement) {
+
+        // Check that the browser actually exposes
+        // the requestFullscreen() method.
+        if (
+            typeof videoContainer.requestFullscreen !==
+            "function"
+        ) {
+
+            console.warn(
+                "This browser does not support requestFullscreen()."
+            );
+
+            return;
+
+        }
+
+        await videoContainer.requestFullscreen();
+
+    }
+
+    // Attempt landscape orientation where supported.
+    if (
+        screen.orientation &&
+        typeof screen.orientation.lock === "function"
+    ) {
+
+        try {
+
+            await screen.orientation.lock(
+                "landscape"
+            );
+
+            console.log(
+                "Fullscreen landscape lock successful."
+            );
+
+        } catch (orientationError) {
+
+            console.warn(
+                "Landscape lock unavailable:",
+                orientationError
+            );
+
+        }
+
+    }
+
+} catch (fullscreenError) {
+
+    console.error(
+        "Fullscreen request failed:",
+        fullscreenError
+    );
+
+}
+
+}
+
+if (fullscreenLandscapeBtn) {
+
+    fullscreenLandscapeBtn.addEventListener(
+        "click",
+        enterFullscreenLandscape
+    );
+
+}
+
+document.addEventListener(
+    "fullscreenchange",
+    function () {
+
+        if (!document.fullscreenElement) {
+
+            try {
+
+                if (
+                    screen.orientation &&
+                    typeof screen.orientation.unlock ===
+                        "function"
+                ) {
+
+                    screen.orientation.unlock();
+
+                }
+
+            } catch (error) {
+
+                console.warn(
+                    "Could not unlock screen orientation:",
+                    error
+                );
+
+            }
+
+        }
+
+    }
+);
+
+document.addEventListener(
+    "fullscreenerror",
+    function (event) {
+
+        console.warn(
+            "Fullscreen request was rejected.",
+            event
+        );
+
+    }
+);
+
+// ======================================
 // AMBASSADOR PROFILE SWITCHING
 // ======================================
 

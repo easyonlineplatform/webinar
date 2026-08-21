@@ -267,6 +267,99 @@ body{
     height:100%;
     border:0;
 }
+
+/* ==========================================
+   NATIVE WEBINAR VIDEO
+   ========================================== */
+
+#webinarVideo {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+    background: #000;
+
+    object-fit: contain;
+
+}
+
+
+/* ==========================================
+   FULLSCREEN WEBINAR
+   ========================================== */
+
+.video-container:fullscreen {
+
+    width: 100vw;
+
+    height: 100vh;
+
+    max-width: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    border-radius: 0;
+
+    background: #000;
+
+    box-shadow: none;
+
+}
+
+
+/* Safari / WebKit fullscreen fallback */
+
+.video-container:-webkit-full-screen {
+
+    width: 100vw;
+
+    height: 100vh;
+
+    max-width: none;
+
+    margin: 0;
+
+    padding: 0;
+
+    border-radius: 0;
+
+    background: #000;
+
+    box-shadow: none;
+
+}
+
+
+/* Video inside standard fullscreen */
+
+.video-container:fullscreen #webinarVideo {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
+
+/* Video inside WebKit fullscreen */
+
+.video-container:-webkit-full-screen #webinarVideo {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: contain;
+
+}
+
 /* ==========================================
    TIMED OFFER CARD
 ========================================== */
@@ -1052,208 +1145,6 @@ margin:40px auto;
 #closeEasyAiHub:hover{
 
     background:rgba(255,255,255,.18);
-
-}
-
-
-/* ==========================================
-   EASY AI HUB - MOBILE
-========================================== */
-
-@media (max-width:768px){
-
-    #easyAiHubInvitation{
-
-        padding:16px;
-
-    }
-
-    .easy-ai-hub-card{
-
-        max-width:420px;
-
-        padding:26px 20px 22px;
-
-        border-radius:20px;
-
-    }
-
-    .easy-ai-hub-logo{
-
-        width:88px;
-
-        height:88px;
-
-        margin-bottom:16px;
-
-    }
-
-    .easy-ai-hub-card h2{
-
-        font-size:24px;
-
-    }
-
-    .easy-ai-hub-card p{
-
-        font-size:15px;
-
-        line-height:1.55;
-
-    }
-
-    #easyAiHubBtn{
-
-        font-size:17px;
-
-        padding:15px 18px;
-
-    }
-
-}
-
-/* ==========================================
-   MOBILE VIEWING TIP
-   ========================================== */
-
-#mobile-view-tip {
-    display: none;
-}
-
-
-/* ==========================================
-   MOBILE VIEWING TIP - MOBILE ONLY
-   ========================================== */
-
-@media (max-width: 768px) {
-
-    #mobile-view-tip {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        gap: 14px;
-
-        width: calc(100% - 20px);
-
-        margin: 10px auto 8px;
-
-        padding: 10px 12px;
-
-        background: #f8fafc;
-
-        border: 1px solid #e5e7eb;
-
-        border-radius: 10px;
-
-        box-shadow: 0 2px 8px rgba(0,0,0,.06);
-
-    }
-
-    .mobile-view-tip-text {
-
-        display: flex;
-
-        flex-direction: column;
-
-        justify-content: center;
-
-        text-align: left;
-
-        line-height: 1.25;
-
-    }
-
-    .mobile-view-tip-text strong {
-
-        color: #111827;
-
-        font-size: 13px;
-
-        font-weight: 700;
-
-    }
-
-    .mobile-view-tip-text span {
-
-        color: #6b7280;
-
-        font-size: 12px;
-
-        margin-top: 2px;
-
-    }
-
-    .phone-rotation-guide {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        gap: 7px;
-
-        flex-shrink: 0;
-
-    }
-
-    .guide-phone {
-
-        position: relative;
-
-        background: #111827;
-
-        border: 2px solid #374151;
-
-        border-radius: 6px;
-
-        box-shadow: 0 2px 5px rgba(0,0,0,.16);
-
-    }
-
-    .guide-phone-portrait {
-
-        width: 20px;
-
-        height: 36px;
-
-    }
-
-    .guide-phone-landscape {
-
-        width: 36px;
-
-        height: 20px;
-
-    }
-
-    .guide-phone-screen {
-
-        position: absolute;
-
-        inset: 3px;
-
-        background: #f3f4f6;
-
-        border-radius: 3px;
-
-    }
-
-    .guide-rotate-arrow {
-
-        color: #22c55e;
-
-        font-size: 18px;
-
-        font-weight: 700;
-
-        line-height: 1;
-
-    }
 
 }
 
