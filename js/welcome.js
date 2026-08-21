@@ -55,49 +55,54 @@ if (webinarCompleted) {
 
 }
 
-beginBtn.addEventListener("click", function(){
+beginBtn.addEventListener("click", async function () {
 
+    // Record that this visitor has started the webinar.
     localStorage.setItem(
         `webinarStarted_${welcomeProfileKey}`,
         "true"
     );
 
-    // ==========================================
-    // NORMAL BROWSER EXPERIENCE
-    // ==========================================
-    // Chrome, Firefox, Edge, Safari, etc.
-    // Keep the existing experience unchanged.
+    // Hide the welcome screen immediately.
+    welcomeScreen.style.display = "none";
 
-    if (webinarStarted) {
+    // No connecting countdown here.
+    loadingScreen.style.display = "none";
 
-        welcomeScreen.style.display = "none";
+    // Show the webinar container.
+    container.style.display = "block";
 
-        loadingScreen.style.display = "none";
+    // Initialize the native HLS player.
+    initializeWebinarPlayer();
 
-        container.style.display = "block";
+    // Restore the existing offer countdown state.
+    resumeOfferCountdown();
 
-        createBunnyPlayer();
+    // Give the native player a moment to attach/load,
+    // then attempt playback from this user interaction.
+    const video = document.getElementById("webinarVideo");
 
-        resumeOfferCountdown();
-
+    if (!video) {
+        console.error("Webinar video element not found.");
         return;
     }
 
-    // Hide Welcome Screen
-    welcomeScreen.style.display = "none";
+    try {
 
-    // Show Connecting Screen
-    loadingScreen.style.display = "flex";
+        await video.play();
 
-    // Hide countdown number initially
-    countdownNumber.style.display = "none";
+        console.log(
+            "Native webinar playback started successfully."
+        );
 
-    // First message
-    loadingMessage.innerHTML =
-        "Connecting you to your private training...<br><br>Please wait while we prepare your session...";
+    } catch (error) {
 
-    // Wait 2 seconds
-    setTimeout(startCountdown, 2000);
+        console.error(
+            "Native webinar playback failed:",
+            error
+        );
+
+    }
 
 });
 
@@ -133,7 +138,7 @@ function startCountdown(){
 
 container.style.display="block";
 
-createBunnyPlayer();
+initializeWebinarPlayer();
 
 resumeOfferCountdown();
 

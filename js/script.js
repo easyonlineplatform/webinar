@@ -283,88 +283,238 @@ document.addEventListener(
 // CREATE ONLY WHEN WEBINAR STARTS
 // =====================================
 
-function createBunnyPlayer() {
+// =====================================
+// NATIVE HLS WEBINAR PLAYER
+// =====================================
 
-    console.log("Creating Bunny Player");
+function initializeWebinarPlayer() {
 
-    const videoContainer =
-        document.getElementById("videoContainer");
+    console.log("Creating native HLS Webinar Player");
 
-    if (!videoContainer) {
+    const video = document.getElementById("webinarVideo");
+
+    if (!video) {
 
         console.error(
-            "Bunny Player: video container not found"
+            "Native Webinar Player: #webinarVideo not found"
         );
 
         return;
 
     }
 
-    // Prevent duplicate player creation
+    // Prevent duplicate initialization
+    if (video.dataset.initialized === "true") {
+
+        console.log(
+            "Native Webinar Player already initialized"
+        );
+
+        return;
+
+    }
+
+    video.dataset.initialized = "true";
+
+    // Make the video fill the existing video container.
+    video.style.width = "100%";
+    video.style.height = "100%";
+    video.style.display = "block";
+    video.style.backgroundColor = "#000";
+
+    // Keep mobile playback inline.
+    video.playsInline = true;
+
+    // Bunny HLS playlist
+    const hlsUrl =
+        "https://vz-d09f10b5-f8a.b-cdn.net/a8b08dd7-ebf5-417e-b793-a7f9ec72cf55/playlist.m3u8";
+
+    // -------------------------------------
+    // NATIVE VIDEO EVENTS
+    // -------------------------------------
+
+    video.addEventListener("play", function () {
+
+        console.log("Native Webinar Playback Started");
+
+        if (!videoTimer) {
+
+            videoTimer =
+                setInterval(function () {
+
+                    checkVideoTime(
+                        video.currentTime
+                    );
+
+                }, 1000);
+
+        }
+
+    });
+
+    video.addEventListener("pause", function () {
+
+        console.log("Native Webinar Playback Paused");
+
+        clearInterval(videoTimer);
+
+        videoTimer = null;
+
+    });
+
+    video.addEventListener("ended", function () {
+
+        console.log("Native Webinar Playback Ended");
+
+        clearInterval(videoTimer);
+
+        videoTimer = null;
+
+        localStorage.setItem(
+            profileStorageKey("webinarCompleted"),
+            "true"
+        );
+
+        localStorage.setItem(
+            profileStorageKey("webinarCompletedPosition"),
+            Math.floor(video.currentTime)
+        );
+
+        // Wait 3 minutes after the webinar ends
+        // before showing the Easy AI Hub invitation.
+        if (easyAiHubEndTimer) {
+
+            clearTimeout(
+                easyAiHubEndTimer
+            );
+
+        }
+
+        easyAiHubEndTimer =
+            setTimeout(
+                function () {
+
+                    console.log(
+                        "Easy AI Hub grace period ended"
+                    );
+
+                    showEasyAiHubInvitation();
+
+                },
+                3 * 60 * 1000
+            );
+
+    });
+
+    video.addEventListener("timeupdate", function () {
+
+        checkVideoTime(
+            video.currentTime
+        );
+
+    });
+
+    // -------------------------------------
+    // ERROR HANDLING
+    // -------------------------------------
+
+    video.addEventListener("error", function () {
+
+        console.error(
+            "Native Webinar Video Error:",
+            video.error
+        );
+
+    });
+
+    // -------------------------------------
+    // LOAD HLS
+    // -------------------------------------
+
     if (
-        document.getElementById("webinarPlayer")
+        video.canPlayType(
+            "application/vnd.apple.mpegurl"
+        )
     ) {
 
         console.log(
-            "Bunny Player iframe already exists"
+            "Native HLS playback supported"
         );
 
-        return;
+        video.src = hlsUrl;
+
+        video.load();
+
+    } else if (
+        typeof Hls !== "undefined" &&
+        Hls.isSupported()
+    ) {
+
+        console.log(
+            "Using HLS.js for webinar playback"
+        );
+
+        const hls =
+            new Hls();
+
+        window.webinarHls =
+            hls;
+
+        hls.on(
+            Hls.Events.ERROR,
+            function (
+                event,
+                data
+            ) {
+
+                console.error(
+                    "HLS Error:",
+                    data
+                );
+
+            }
+        );
+
+        hls.on(
+            Hls.Events.MANIFEST_PARSED,
+            function () {
+
+                console.log(
+                    "Native HLS Webinar Ready"
+                );
+
+                window.webinarVideoReady =
+                    true;
+
+            }
+        );
+
+        hls.loadSource(
+            hlsUrl
+        );
+
+        hls.attachMedia(
+            video
+        );
+
+    } else {
+
+        console.error(
+            "This browser does not support HLS playback."
+        );
 
     }
 
-    const iframe =
-        document.createElement("iframe");
-
-    iframe.id = "webinarPlayer";
-
-    iframe.src =
-"https://player.mediadelivery.net/embed/722085/a8b08dd7-ebf5-417e-b793-a7f9ec72cf55?preload=true";
-
-    iframe.loading = "lazy";
-
-    iframe.style.border = "0";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%";
-
-    iframe.allow =
-        "autoplay; fullscreen; picture-in-picture";
-
-    iframe.allowFullscreen = true;
-
-    videoContainer.appendChild(iframe);
-
-    iframe.addEventListener(
-        "load",
-        function () {
-
-            console.log(
-                "Bunny iframe loaded"
-            );
-
-            BunnyProvider.initialize(
-    iframe,
-    {
-
-        onReady: function () {
-
-    console.log(
-        "Bunny Provider Ready"
-    );
-
-    VideoEngine.initialize(
-        "bunny",
-        BunnyProvider
-    );
-
-    console.log(
-        "Bunny Video Engine Ready"
-    );
+    // -------------------------------------
+    // RESTORE SAVED WEBINAR POSITION
+    // -------------------------------------
 
     const webinarCompleted =
-    localStorage.getItem(
-        profileStorageKey("webinarCompleted")
-    ) === "true";
+        localStorage.getItem(
+            profileStorageKey(
+                "webinarCompleted"
+            )
+        ) === "true";
 
     if (webinarCompleted) {
 
@@ -375,167 +525,85 @@ function createBunnyPlayer() {
         const completedPosition =
             Number(
                 localStorage.getItem(
-                    profileStorageKey("webinarCompletedPosition")
+                    profileStorageKey(
+                        "webinarCompletedPosition"
+                    )
                 )
             );
 
         if (
-            Number.isFinite(completedPosition) &&
+            Number.isFinite(
+                completedPosition
+            ) &&
             completedPosition >= 0
         ) {
 
-            VideoEngine.seekTo(
-                completedPosition
+            video.addEventListener(
+                "loadedmetadata",
+                function () {
+
+                    video.currentTime =
+                        completedPosition;
+
+                },
+                { once: true }
             );
-
-            checkVideoTime(
-                completedPosition
-            );
-
-        } else {
-
-            checkVideoTime();
 
         }
 
-        VideoEngine.pause();
+        checkVideoTime(
+            completedPosition
+        );
+
+        // Completed webinars remain paused.
+        video.pause();
 
     } else {
 
-    // Check whether this visitor has already started
-    // the webinar and has a saved position.
-    const webinarStarted =
-        localStorage.getItem(
-            profileStorageKey("webinarStarted")
-        ) === "true";
-
-    const savedPosition =
-        Number(
+        // Check whether this visitor has already
+        // started the webinar and has a saved position.
+        const webinarStarted =
             localStorage.getItem(
-                profileStorageKey("webinarPosition")
-            )
-        );
+                profileStorageKey(
+                    "webinarStarted"
+                )
+            ) === "true";
 
-    if (
-        webinarStarted &&
-        Number.isFinite(savedPosition) &&
-        savedPosition > 5
-    ) {
+        const savedPosition =
+            Number(
+                localStorage.getItem(
+                    profileStorageKey(
+                        "webinarPosition"
+                    )
+                )
+            );
 
-        console.log(
-            "Returning incomplete visitor - restoring saved position"
-        );
-
-        VideoEngine.seekTo(savedPosition);
-
-        checkVideoTime(savedPosition);
-
-    } else {
-
-        // Normal first-time visitor
-        checkVideoTime();
-
-    }
-
-    VideoEngine.play();
-
-}
-
-},
-
-        onPlay: function () {
+        if (
+            webinarStarted &&
+            Number.isFinite(
+                savedPosition
+            ) &&
+            savedPosition > 5
+        ) {
 
             console.log(
-                "Bunny Playback Started"
+                "Returning incomplete visitor - restoring saved position"
             );
 
-            if (!videoTimer) {
+            video.addEventListener(
+                "loadedmetadata",
+                function () {
 
-                videoTimer =
-                    setInterval(
-                        checkVideoTime,
-                        1000
-                    );
+                    video.currentTime =
+                        savedPosition;
 
-            }
-
-        },
-
-        onPause: function () {
-
-            console.log(
-                "Bunny Playback Paused"
+                },
+                { once: true }
             );
-
-            clearInterval(
-                videoTimer
-            );
-
-            videoTimer = null;
-
-        },
-
-        onEnded: function () {
-
-    console.log(
-        "Bunny Playback Ended"
-    );
-
-    clearInterval(
-        videoTimer
-    );
-
-    videoTimer = null;
-
-    localStorage.setItem(
-    profileStorageKey("webinarCompleted"),
-    "true"
-);
-
-localStorage.setItem(
-    profileStorageKey("webinarCompletedPosition"),
-    Math.floor(
-        BunnyProvider.getCurrentTime()
-    )
-);
-
-    // Wait 3 minutes after the webinar ends
-    // before showing the Easy AI Hub invitation.
-    if (easyAiHubEndTimer) {
-
-        clearTimeout(
-            easyAiHubEndTimer
-        );
-
-    }
-
-    easyAiHubEndTimer = setTimeout(
-        function () {
-
-            console.log(
-                "Easy AI Hub grace period ended"
-            );
-
-            showEasyAiHubInvitation();
-
-        },
-        3 * 60 * 1000
-    );
-
-},
-
-        onTimeUpdate: function (currentTime) {
-
-            checkVideoTime(currentTime);
 
         }
 
     }
-);
-
-        },
-        { once: true }
-    );
 
 }
 
@@ -551,7 +619,7 @@ if (
         "Completed webinar detected - restoring session"
     );
 
-    createBunnyPlayer();
+    initializeWebinarPlayer();
 
     resumeOfferCountdown();
 
@@ -559,14 +627,19 @@ if (
 
 function checkVideoTime(currentTime) {
 
-    if (!BunnyProvider.ready) return;
+    const video =
+        document.getElementById("webinarVideo");
+
+    if (!video) return;
 
     if (typeof currentTime !== "number") {
 
         currentTime =
-            VideoEngine.getCurrentTime();
+            video.currentTime;
 
     }
+
+    if (!Number.isFinite(currentTime)) return;
 
     localStorage.setItem(
     profileStorageKey("webinarPosition"),
