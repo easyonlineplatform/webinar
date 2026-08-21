@@ -428,82 +428,94 @@ function initializeWebinarPlayer() {
     });
 
     // -------------------------------------
-    // LOAD HLS
-    // -------------------------------------
+// LOAD HLS
+// -------------------------------------
 
-    if (
-        video.canPlayType(
-            "application/vnd.apple.mpegurl"
-        )
-    ) {
+if (
+    typeof Hls !== "undefined" &&
+    Hls.isSupported()
+) {
 
-        console.log(
-            "Native HLS playback supported"
-        );
+    console.log(
+        "Using HLS.js for webinar playback"
+    );
 
-        video.src = hlsUrl;
+    const hls =
+        new Hls();
 
-        video.load();
+    window.webinarHls =
+        hls;
 
-    } else if (
-        typeof Hls !== "undefined" &&
-        Hls.isSupported()
-    ) {
+    hls.on(
+        Hls.Events.ERROR,
+        function (
+            event,
+            data
+        ) {
 
-        console.log(
-            "Using HLS.js for webinar playback"
-        );
-
-        const hls =
-            new Hls();
-
-        window.webinarHls =
-            hls;
-
-        hls.on(
-            Hls.Events.ERROR,
-            function (
-                event,
+            console.error(
+                "HLS Error:",
                 data
-            ) {
+            );
 
-                console.error(
-                    "HLS Error:",
-                    data
-                );
+        }
+    );
 
-            }
-        );
+    hls.on(
+        Hls.Events.MEDIA_ATTACHED,
+        function () {
 
-        hls.on(
-            Hls.Events.MANIFEST_PARSED,
-            function () {
+            console.log(
+                "HLS media attached to native video"
+            );
 
-                console.log(
-                    "Native HLS Webinar Ready"
-                );
+        }
+    );
 
-                window.webinarVideoReady =
-                    true;
+    hls.on(
+        Hls.Events.MANIFEST_PARSED,
+        function () {
 
-            }
-        );
+            console.log(
+                "Native HLS Webinar Ready"
+            );
 
-        hls.loadSource(
-            hlsUrl
-        );
+            window.webinarVideoReady =
+                true;
 
-        hls.attachMedia(
-            video
-        );
+        }
+    );
 
-    } else {
+    hls.loadSource(
+        hlsUrl
+    );
 
-        console.error(
-            "This browser does not support HLS playback."
-        );
+    hls.attachMedia(
+        video
+    );
 
-    }
+} else if (
+    video.canPlayType(
+        "application/vnd.apple.mpegurl"
+    )
+) {
+
+    console.log(
+        "Using browser-native HLS playback"
+    );
+
+    video.src =
+        hlsUrl;
+
+    video.load();
+
+} else {
+
+    console.error(
+        "This browser does not support HLS playback."
+    );
+
+}
 
     // -------------------------------------
     // RESTORE SAVED WEBINAR POSITION
