@@ -484,24 +484,40 @@ function initializeWebinarPlayer() {
     // NATIVE VIDEO EVENTS
     // -------------------------------------
 
-    video.addEventListener("play", function () {
+   video.addEventListener("play", function () {
 
-        console.log("Native Webinar Playback Started");
+    console.log("Native Webinar Playback Started");
 
-        if (!videoTimer) {
+    // Send webinar_started only once per page session.
+    if (!window.webinarStartedEventSent) {
 
-            videoTimer =
-                setInterval(function () {
+        window.webinarStartedEventSent = true;
 
-                    checkVideoTime(
-                        video.currentTime
-                    );
+        window.dataLayer = window.dataLayer || [];
 
-                }, 1000);
+        window.dataLayer.push({
+            event: "webinar_started"
+        });
 
-        }
+        console.log(
+            "GTM event sent: webinar_started"
+        );
+    }
 
-    });
+    if (!videoTimer) {
+
+        videoTimer =
+            setInterval(function () {
+
+                checkVideoTime(
+                    video.currentTime
+                );
+
+            }, 1000);
+
+    }
+
+});
 
     video.addEventListener("pause", function () {
 
