@@ -275,12 +275,27 @@ joinBtn.addEventListener("click", function () {
 
     allowLeave = true;
 
-    joinClicked = true;
+    // Send join_now_clicked only once per visitor session.
+    if (!joinClicked) {
 
-sessionStorage.setItem(
-    profileSessionKey("easyAiJoinClicked"),
-    "true"
-);
+        joinClicked = true;
+
+        window.dataLayer = window.dataLayer || [];
+
+        window.dataLayer.push({
+            event: "join_now_clicked"
+        });
+
+        console.log(
+            "GTM event sent: join_now_clicked"
+        );
+
+    }
+
+    sessionStorage.setItem(
+        profileSessionKey("easyAiJoinClicked"),
+        "true"
+    );
 
     window.open(
         getActiveAmbassador().selarLink,
