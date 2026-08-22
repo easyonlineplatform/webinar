@@ -825,15 +825,29 @@ function checkVideoTime(currentTime) {
     Math.floor(currentTime)
 );
 
-    if (currentTime >= CONFIG.OFFER_TIME && !offerShown) {
+   if (currentTime >= CONFIG.OFFER_TIME && !offerShown) {
 
     offerShown = true;
 
-const offerWrapper = document.getElementById("offer-wrapper");
+    // Send the promotion-view event to Google Tag Manager.
+    window.dataLayer = window.dataLayer || [];
 
-offerWrapper.classList.add("show-wrapper");
+    window.dataLayer.push({
+        event: "view_promotion",
+        promotion_id: "easy_ai_97_offer",
+        promotion_name: "Easy Online Digital Training - GH₵97"
+    });
 
-offerCard.classList.add("show-offer");
+    console.log(
+        "GTM event sent: view_promotion"
+    );
+
+    const offerWrapper =
+        document.getElementById("offer-wrapper");
+
+    offerWrapper.classList.add("show-wrapper");
+
+    offerCard.classList.add("show-offer");
 
     if (
     localStorage.getItem(
