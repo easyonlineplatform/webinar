@@ -227,6 +227,18 @@ princelarbi: {
     whatsappGroupLink:
         "https://chat.whatsapp.com/D7vgnesLwac6QKfiPng98x?s=cl&p=a&mlu=0"
 
+},
+
+// Prince Agyei
+princeagyei: {
+    selarLink:
+        "https://selar.com/p/u6g2777366?affiliate=861y0851y8&add_to_cart=1",
+
+    whatsappNumber:
+        "233543743480",
+
+    whatsappGroupLink:
+        "https://chat.whatsapp.com/Kfc6lwWleiZK08Rovupugo?s=cl&p=i&mlu=4"
 }
 
 };
