@@ -493,7 +493,7 @@ function initializeWebinarPlayer() {
 
     // Bunny HLS playlist
     const hlsUrl =
-        "https://vz-d09f10b5-f8a.b-cdn.net/a8b08dd7-ebf5-417e-b793-a7f9ec72cf55/playlist.m3u8";
+    "https://vz-d09f10b5-f8a.b-cdn.net/d9abff7e-ca08-4adc-b61c-1bee6c003b20/playlist.m3u8";
 
     // -------------------------------------
     // NATIVE VIDEO EVENTS
