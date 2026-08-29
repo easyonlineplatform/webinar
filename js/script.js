@@ -732,6 +732,26 @@ if (
         hls;
 
         hls.on(
+    Hls.Events.LEVEL_SWITCHING,
+    function (
+        event,
+        data
+    ) {
+
+        console.log(
+            "[HLS DIAGNOSTIC] LEVEL_SWITCHING",
+            {
+                requestedLevel: data.level,
+                currentTime: video.currentTime,
+                videoWidth: video.videoWidth,
+                videoHeight: video.videoHeight
+            }
+        );
+
+    }
+);
+
+        hls.on(
     Hls.Events.LEVEL_SWITCHED,
     function (
         event,
