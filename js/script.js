@@ -729,8 +729,20 @@ if (
         startLevel: 2
     });
 
-    window.webinarHls =
-        hls;
+/*
+ * TEMPORARY STARTUP ABR CAP
+ *
+ * Keep automatic quality selection capped at
+ * 480p during the critical startup phase.
+ *
+ * This prevents HLS.js from immediately
+ * jumping through 720p -> 1080p while the
+ * first video frames are being established.
+ */
+hls.autoLevelCapping = 2;
+
+window.webinarHls =
+    hls;
 
         hls.on(
     Hls.Events.LEVEL_SWITCHING,
