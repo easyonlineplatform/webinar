@@ -17,7 +17,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <title>EASY AI TRAINING</title>
 
-<link rel="stylesheet" href="css/style.css?v=3">
+<link rel="stylesheet" href="css/style.css?v=4">
 
 <link rel="icon" type="image/png" sizes="96x96" href="images/logo/favicon.png">
 <link rel="icon" href="images/logo/favicon.ico">
@@ -98,12 +98,30 @@ EASY AI TRAINING
 
 <div class="video-container" id="videoContainer">
 
-    <video
-    id="webinarVideo"
-    playsinline
-    preload="metadata"
+    <div
+    id="videoStartupOverlay"
+    class="hidden"
+    aria-hidden="true"
 >
-</video>
+        <div class="video-startup-content">
+            <div class="video-startup-spinner"></div>
+
+            <div class="video-startup-title">
+                Connecting you to your private training...
+            </div>
+
+            <div class="video-startup-subtitle">
+                Your training will begin automatically.
+            </div>
+        </div>
+    </div>
+
+    <video
+        id="webinarVideo"
+        playsinline
+        preload="metadata"
+    >
+    </video>
 
 </div>
 
@@ -250,7 +268,7 @@ EASY AI TRAINING
 
 <script src="js/config.js?v=2"></script>
 <script src="js/ambassadors.js?v=1"></script>
-<script src="js/welcome.js?v=1"></script>
+<script src="js/welcome.js?v=2"></script>
 <script src="js/script.js?v=4"></script>
 
 </body>

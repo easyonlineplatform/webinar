@@ -286,6 +286,130 @@ body{
 
 }
 
+/* ==========================================
+   VIDEO STARTUP OVERLAY
+   ========================================== */
+
+#videoStartupOverlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15,23,42,.96),
+            rgba(17,24,39,.96),
+            rgba(30,41,59,.96)
+        );
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: none;
+
+    z-index: 10;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+
+}
+
+
+/* Hidden after playback begins */
+
+#videoStartupOverlay.hidden {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+}
+
+
+.video-startup-content {
+
+    width: 90%;
+
+    max-width: 420px;
+
+    text-align: center;
+
+    color: #ffffff;
+
+}
+
+
+.video-startup-spinner {
+
+    width: 48px;
+
+    height: 48px;
+
+    margin: 0 auto 22px;
+
+    border: 4px solid rgba(255,255,255,.22);
+
+    border-top-color: #22c55e;
+
+    border-radius: 50%;
+
+    animation:
+        videoStartupSpin .9s linear infinite;
+
+}
+
+
+.video-startup-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    line-height: 1.4;
+
+    color: #ffffff;
+
+}
+
+
+.video-startup-subtitle {
+
+    margin-top: 8px;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    color: #cbd5e1;
+
+}
+
+
+@keyframes videoStartupSpin {
+
+    from {
+
+        transform: rotate(0deg);
+
+    }
+
+    to {
+
+        transform: rotate(360deg);
+
+    }
+
+}
 
 /* ==========================================
    FULLSCREEN WEBINAR

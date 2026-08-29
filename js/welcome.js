@@ -63,36 +63,112 @@ beginBtn.addEventListener("click", async function () {
         "true"
     );
 
-    // Hide the welcome screen immediately.
-    welcomeScreen.style.display = "none";
+    const video =
+        document.getElementById("webinarVideo");
 
-    // No connecting countdown here.
-    loadingScreen.style.display = "none";
-
-    // Show the webinar container.
-    container.style.display = "block";
-
-    // Initialize the native HLS player.
-    initializeWebinarPlayer();
-
-    // Restore the existing offer countdown state.
-    resumeOfferCountdown();
-
-    // Give the native player a moment to attach/load,
-    // then attempt playback from this user interaction.
-    const video = document.getElementById("webinarVideo");
+    const videoStartupOverlay =
+        document.getElementById(
+            "videoStartupOverlay"
+        );
 
     if (!video) {
-        console.error("Webinar video element not found.");
+
+        console.error(
+            "Webinar video element not found."
+        );
+
         return;
+
     }
+
+    /*
+     * Keep the startup overlay visible while the
+     * actual webinar player is being prepared.
+     */
+    if (videoStartupOverlay) {
+
+        videoStartupOverlay.classList.remove(
+            "hidden"
+        );
+
+        videoStartupOverlay.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+    }
+
+    /*
+     * Hide the welcome screen.
+     */
+    welcomeScreen.style.display = "none";
+
+    /*
+     * The old 20-second connecting screen is not
+     * used for normal webinar startup.
+     */
+    loadingScreen.style.display = "none";
+
+    /*
+     * Reveal the webinar container.
+     *
+     * The video itself is covered by the startup
+     * overlay until real playback begins.
+     */
+    container.style.display = "block";
+
+    /*
+     * Initialize the existing HLS player.
+     *
+     * IMPORTANT:
+     * This preserves the existing Bunny/HLS system.
+     */
+    initializeWebinarPlayer();
+
+    /*
+     * Preserve the existing offer countdown logic.
+     */
+    resumeOfferCountdown();
+
+    /*
+     * Wait for actual playback to begin.
+     *
+     * The "playing" event is intentionally used
+     * instead of a fixed timeout or MANIFEST_PARSED.
+     */
+    const revealVideo = function () {
+
+        if (!videoStartupOverlay) {
+            return;
+        }
+
+        videoStartupOverlay.classList.add(
+            "hidden"
+        );
+
+        videoStartupOverlay.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+        console.log(
+            "Webinar first playback frame is now ready."
+        );
+
+    };
+
+    video.addEventListener(
+        "playing",
+        revealVideo,
+        { once: true }
+    );
 
     try {
 
         await video.play();
 
         console.log(
-            "Native webinar playback started successfully."
+            "Native webinar playback request accepted."
         );
 
     } catch (error) {
@@ -101,6 +177,24 @@ beginBtn.addEventListener("click", async function () {
             "Native webinar playback failed:",
             error
         );
+
+        /*
+         * If playback is blocked or fails, keep
+         * the startup overlay visible rather than
+         * exposing a black/unusable video.
+         */
+        if (videoStartupOverlay) {
+
+            videoStartupOverlay.classList.remove(
+                "hidden"
+            );
+
+            videoStartupOverlay.setAttribute(
+                "aria-hidden",
+                "false"
+            );
+
+        }
 
     }
 
