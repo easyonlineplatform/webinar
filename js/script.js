@@ -495,6 +495,107 @@ function initializeWebinarPlayer() {
     const hlsUrl =
     "https://vz-d09f10b5-f8a.b-cdn.net/d9abff7e-ca08-4adc-b61c-1bee6c003b20/playlist.m3u8";
 
+    // ======================================
+// STARTUP VIDEO DIAGNOSTICS
+// TEMPORARY - REMOVE AFTER TESTING
+// ======================================
+
+let startupDiagnosticActive = true;
+
+function logVideoState(label) {
+
+    if (!startupDiagnosticActive) {
+        return;
+    }
+
+    console.log(
+        `[VIDEO DIAGNOSTIC] ${label}`,
+        {
+            currentTime: video.currentTime,
+            readyState: video.readyState,
+            networkState: video.networkState,
+            paused: video.paused,
+            seeking: video.seeking,
+            videoWidth: video.videoWidth,
+            videoHeight: video.videoHeight,
+            clientWidth: video.clientWidth,
+            clientHeight: video.clientHeight,
+            duration: video.duration,
+            buffered:
+                video.buffered.length > 0
+                    ? {
+                        start: video.buffered.start(0),
+                        end: video.buffered.end(0)
+                    }
+                    : null
+        }
+    );
+
+}
+
+video.addEventListener(
+    "loadedmetadata",
+    function () {
+        logVideoState("loadedmetadata");
+    }
+);
+
+video.addEventListener(
+    "loadeddata",
+    function () {
+        logVideoState("loadeddata");
+    }
+);
+
+video.addEventListener(
+    "canplay",
+    function () {
+        logVideoState("canplay");
+    }
+);
+
+video.addEventListener(
+    "playing",
+    function () {
+        logVideoState("playing");
+    }
+);
+
+video.addEventListener(
+    "waiting",
+    function () {
+        logVideoState("waiting");
+    }
+);
+
+video.addEventListener(
+    "seeking",
+    function () {
+        logVideoState("seeking");
+    }
+);
+
+video.addEventListener(
+    "seeked",
+    function () {
+        logVideoState("seeked");
+    }
+);
+
+video.addEventListener(
+    "durationchange",
+    function () {
+        logVideoState("durationchange");
+    }
+);
+
+video.addEventListener(
+    "progress",
+    function () {
+        logVideoState("progress");
+    }
+);
+
     // -------------------------------------
     // NATIVE VIDEO EVENTS
     // -------------------------------------
@@ -629,6 +730,33 @@ if (
 
     window.webinarHls =
         hls;
+
+        hls.on(
+    Hls.Events.LEVEL_SWITCHED,
+    function (
+        event,
+        data
+    ) {
+
+        console.log(
+            "[HLS DIAGNOSTIC] LEVEL_SWITCHED",
+            {
+                level: data.level,
+                currentTime: video.currentTime,
+                videoWidth: video.videoWidth,
+                videoHeight: video.videoHeight,
+                buffered:
+                    video.buffered.length > 0
+                        ? {
+                            start: video.buffered.start(0),
+                            end: video.buffered.end(0)
+                        }
+                        : null
+            }
+        );
+
+    }
+);
 
     hls.on(
         Hls.Events.ERROR,
