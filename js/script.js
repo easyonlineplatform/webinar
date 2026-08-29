@@ -622,8 +622,10 @@ if (
         "Using HLS.js for webinar playback"
     );
 
-    const hls =
-        new Hls();
+   const hls =
+    new Hls({
+        debug: true
+    });
 
     window.webinarHls =
         hls;
