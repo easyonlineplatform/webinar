@@ -725,7 +725,8 @@ if (
 
    const hls =
     new Hls({
-        debug: true
+        debug: true,
+        abrSwitchInterval: 5
     });
 
     window.webinarHls =
