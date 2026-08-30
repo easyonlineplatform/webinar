@@ -723,27 +723,11 @@ if (
         "Using HLS.js for webinar playback"
     );
 
-    // Detect Android user agents for mobile-only conservative tuning.
-    const isAndroid = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '');
-    const maxBufferHoleVal = isAndroid ? 1.5 : 0.9;
-   const hls =
+    const hls =
     new Hls({
         debug: false,
-        // Start at a safe mid quality to reduce initial up-switch churn
         startLevel: 2,
-        // Start from the very beginning; avoids small seek jitter
-        startPosition: 0,
-        // Prevent level selection above the player size on small screens
-        capLevelToPlayerSize: true,
-        // Use worker parsing where available to reduce main-thread jank
-        enableWorker: true,
-        // Conservative buffer sizing to avoid sudden level switches
-        maxBufferLength: 30,
-        maxMaxBufferLength: 60,
-        // Avoid tiny buffer-hole corrections by allowing small tolerance.
-        // Increase on Android devices where tiny buffer seeks are more common.
-        maxBufferHole: maxBufferHoleVal,
-        autoStartLoad: true
+        capLevelToPlayerSize: true
     });
     
 window.webinarHls =
@@ -754,47 +738,6 @@ window.webinarHls =
     // cause visual jitter on mobile devices. We'll re-enable ABR
     // after the first fragment has been buffered and the playhead
     // is covered.
-    try {
-        hls.autoLevelEnabled = false;
-        console.log('HLS: autoLevel temporarily disabled to stabilise startup');
-    } catch (e) {}
-
-    (function enableAbrWhenReady() {
-        // Require either two FRAG_BUFFERED events or playback progress
-        // beyond 3 seconds before re-enabling ABR. This avoids an
-        // immediate up-switch that can cause renderer/decoder churn
-        // on many Android devices.
-        let fragCount = 0;
-        const requiredFrags = isAndroid ? 3 : 2;
-
-        const tryEnable = function () {
-            try {
-                const buffered = video.buffered;
-                const time = video.currentTime || 0;
-                if (fragCount >= requiredFrags || time >= 3) {
-                    try {
-                        hls.autoLevelEnabled = true;
-                        console.log('HLS: autoLevel re-enabled after startup buffering');
-                    } catch (e) {}
-                    hls.off(Hls.Events.FRAG_BUFFERED, onFragBuffered);
-                    // remove fallback timeupdate listener
-                    try { video.removeEventListener('timeupdate', tryEnable); } catch (e) {}
-                }
-            } catch (e) {}
-        };
-
-        const onFragBuffered = function (event, data) {
-            fragCount++;
-            // TEMPORARY DIAGNOSTIC
-            console.log('[HLS DIAGNOSTIC] FRAG_BUFFERED count', fragCount);
-            tryEnable();
-        };
-
-        hls.on(Hls.Events.FRAG_BUFFERED, onFragBuffered);
-
-        // Also watch timeupdate as a fallback trigger; remove when done
-        video.addEventListener('timeupdate', tryEnable);
-    })();
 
         hls.on(
     Hls.Events.LEVEL_SWITCHING,
