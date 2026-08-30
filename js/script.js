@@ -723,6 +723,9 @@ if (
         "Using HLS.js for webinar playback"
     );
 
+    // Detect Android user agents for mobile-only conservative tuning.
+    const isAndroid = typeof navigator !== 'undefined' && /Android/i.test(navigator.userAgent || '');
+    const maxBufferHoleVal = isAndroid ? 1.5 : 0.9;
    const hls =
     new Hls({
         debug: false,
@@ -737,8 +740,9 @@ if (
         // Conservative buffer sizing to avoid sudden level switches
         maxBufferLength: 30,
         maxMaxBufferLength: 60,
-        // Avoid tiny buffer-hole corrections by allowing small tolerance
-        maxBufferHole: 0.5,
+        // Avoid tiny buffer-hole corrections by allowing small tolerance.
+        // Increase on Android devices where tiny buffer seeks are more common.
+        maxBufferHole: maxBufferHoleVal,
         autoStartLoad: true
     });
     
@@ -761,7 +765,7 @@ window.webinarHls =
         // immediate up-switch that can cause renderer/decoder churn
         // on many Android devices.
         let fragCount = 0;
-        const requiredFrags = 2;
+        const requiredFrags = isAndroid ? 3 : 2;
 
         const tryEnable = function () {
             try {
@@ -773,6 +777,8 @@ window.webinarHls =
                         console.log('HLS: autoLevel re-enabled after startup buffering');
                     } catch (e) {}
                     hls.off(Hls.Events.FRAG_BUFFERED, onFragBuffered);
+                    // remove fallback timeupdate listener
+                    try { video.removeEventListener('timeupdate', tryEnable); } catch (e) {}
                 }
             } catch (e) {}
         };
@@ -780,13 +786,13 @@ window.webinarHls =
         const onFragBuffered = function (event, data) {
             fragCount++;
             // TEMPORARY DIAGNOSTIC
-            console.log('[HLS DIAGNOSTIC] FRAG_BUFFERED count', fragCount, data);
+            console.log('[HLS DIAGNOSTIC] FRAG_BUFFERED count', fragCount);
             tryEnable();
         };
 
         hls.on(Hls.Events.FRAG_BUFFERED, onFragBuffered);
 
-        // Also watch timeupdate as a fallback trigger
+        // Also watch timeupdate as a fallback trigger; remove when done
         video.addEventListener('timeupdate', tryEnable);
     })();
 
@@ -848,6 +854,19 @@ window.webinarHls =
                 "HLS Error:",
                 data
             );
+
+            try {
+                // Expose a global flag when Hls reports buffer-seek/hole issues
+                const details = data && data.details ? String(data.details) : "";
+                if (details && /buffer|hole|seek/i.test(details)) {
+                    window.webinarHlsBufferSeek = true;
+                    console.log('HLS: detected bufferSeek/hole -> setting webinarHlsBufferSeek flag');
+                    // clear flag after a short period to allow recovery
+                    setTimeout(function () {
+                        window.webinarHlsBufferSeek = false;
+                    }, 4000);
+                }
+            } catch (e) {}
 
         }
     );
