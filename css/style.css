@@ -282,7 +282,13 @@ body{
 
     background: #000;
 
-    object-fit: contain;
+    /* Use cover to avoid letterboxing/resizing jumps and
+       force compositing to reduce rendering jitter. */
+    object-fit: cover;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
 
 }
 
