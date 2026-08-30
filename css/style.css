@@ -285,10 +285,34 @@ body{
     /* Use cover to avoid letterboxing/resizing jumps and
        force compositing to reduce rendering jitter. */
     object-fit: cover;
+    object-position: center center;
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     will-change: transform, opacity;
     backface-visibility: hidden;
+    /* Ensure no transitions or animations affect initial layout */
+    transition: none !important;
+    contain: paint;
+
+}
+
+/* Mobile-specific stabilisation: reserve calculated height and
+   avoid any resizing while the stream initializes. */
+@media (max-width: 768px) {
+
+    .video-container {
+        /* Explicitly enforce the aspect ratio height on mobile */
+        height: calc(100vw * 9 / 16);
+        min-height: calc(100vw * 9 / 16);
+    }
+
+    #webinarVideo {
+        /* Make sure the video fills and cannot shrink unexpectedly */
+        width: 100% !important;
+        height: 100% !important;
+        min-width: 100%;
+        min-height: 100%;
+    }
 
 }
 
