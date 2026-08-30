@@ -745,6 +745,39 @@ if (
 window.webinarHls =
     hls;
 
+    // Temporarily disable automatic level switching during the very
+    // beginning of playback to avoid rapid up-switches that can
+    // cause visual jitter on mobile devices. We'll re-enable ABR
+    // after the first fragment has been buffered and the playhead
+    // is covered.
+    try {
+        hls.autoLevelEnabled = false;
+        console.log('HLS: autoLevel temporarily disabled to stabilise startup');
+    } catch (e) {}
+
+    (function enableAbrWhenReady() {
+        const onFragBuffered = function (event, data) {
+            try {
+                const buffered = video.buffered;
+                if (buffered && buffered.length > 0) {
+                    const start = buffered.start(0);
+                    const end = buffered.end(0);
+                    // Ensure playhead is within buffered range (with small margin)
+                    if (video.currentTime + 0.2 >= start && video.currentTime <= end) {
+                        // Re-enable ABR and remove listener
+                        try {
+                            hls.autoLevelEnabled = true;
+                            console.log('HLS: autoLevel re-enabled after FRAG_BUFFERED');
+                        } catch (e) {}
+                        hls.off(Hls.Events.FRAG_BUFFERED, onFragBuffered);
+                    }
+                }
+            } catch (e) {}
+        };
+
+        hls.on(Hls.Events.FRAG_BUFFERED, onFragBuffered);
+    })();
+
         hls.on(
     Hls.Events.LEVEL_SWITCHING,
     function (
