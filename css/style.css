@@ -282,17 +282,8 @@ body{
 
     background: #000;
 
-    /* Use cover to avoid letterboxing/resizing jumps and
-       force compositing to reduce rendering jitter. */
-    object-fit: cover;
-    object-position: center center;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    /* Ensure no transitions or animations affect initial layout */
-    transition: none !important;
-    contain: paint;
+     /* Keep original rendering behavior (preserve layout semantics). */
+     object-fit: contain;
 
 }
 

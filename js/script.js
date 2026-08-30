@@ -725,9 +725,21 @@ if (
 
    const hls =
     new Hls({
-        debug: true,
+        debug: false,
+        // Start at a safe mid quality to reduce initial up-switch churn
         startLevel: 2,
-        startPosition: 0.1
+        // Start from the very beginning; avoids small seek jitter
+        startPosition: 0,
+        // Prevent level selection above the player size on small screens
+        capLevelToPlayerSize: true,
+        // Use worker parsing where available to reduce main-thread jank
+        enableWorker: true,
+        // Conservative buffer sizing to avoid sudden level switches
+        maxBufferLength: 30,
+        maxMaxBufferLength: 60,
+        // Avoid tiny buffer-hole corrections by allowing small tolerance
+        maxBufferHole: 0.5,
+        autoStartLoad: true
     });
     
 window.webinarHls =

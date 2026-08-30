@@ -136,32 +136,113 @@ beginBtn.addEventListener("click", async function () {
      * The "playing" event is intentionally used
      * instead of a fixed timeout or MANIFEST_PARSED.
      */
-    const revealVideo = function () {
+    // Wait until playback is stable before hiding the overlay.
+    // This avoids exposing a visible position/resize jump when
+    // Hls.js performs a small buffer-hole correction or early
+    // level switching. The overlay UX is preserved; we only
+    // delay its removal until the playhead is covered by buffered
+    // data and no seeking is in progress.
+    const waitForStablePlayback = function (videoEl, timeoutMs = 2000) {
+
+        return new Promise(function (resolve) {
+
+            let finished = false;
+
+            function cleanup() {
+                finished = true;
+                videoEl.removeEventListener("seeked", onSeeked);
+                videoEl.removeEventListener("progress", onProgress);
+                videoEl.removeEventListener("timeupdate", onTimeUpdate);
+                videoEl.removeEventListener("playing", onPlaying);
+            }
+
+            function isStable() {
+                if (videoEl.seeking) return false;
+                if (videoEl.buffered.length > 0) {
+                    try {
+                        const start = videoEl.buffered.start(0);
+                        // Consider stable when the playhead is within
+                        // ~150ms of the first buffered range start.
+                        if (videoEl.currentTime + 0.15 >= start) {
+                            return true;
+                        }
+                    } catch (e) {
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            function attemptFinalize() {
+                if (finished) return;
+                if (isStable()) {
+                    cleanup();
+                    resolve();
+                }
+            }
+
+            function onSeeked() {
+                attemptFinalize();
+            }
+
+            function onProgress() {
+                attemptFinalize();
+            }
+
+            function onTimeUpdate() {
+                attemptFinalize();
+            }
+
+            function onPlaying() {
+                attemptFinalize();
+            }
+
+            videoEl.addEventListener("seeked", onSeeked);
+            videoEl.addEventListener("progress", onProgress);
+            videoEl.addEventListener("timeupdate", onTimeUpdate);
+            videoEl.addEventListener("playing", onPlaying);
+
+            // Start an animation-frame polling loop as a fallback
+            // to catch quick sequences that don't emit all events.
+            const start = Date.now();
+            (function tick() {
+                if (finished) return;
+                if (isStable()) {
+                    cleanup();
+                    resolve();
+                    return;
+                }
+                if (Date.now() - start > timeoutMs) {
+                    // Timeout: give up and reveal the video to avoid
+                    // blocking the UX indefinitely.
+                    cleanup();
+                    resolve();
+                    return;
+                }
+                requestAnimationFrame(tick);
+            })();
+
+        });
+
+    };
+
+    const revealVideo = async function () {
 
         if (!videoStartupOverlay) {
             return;
         }
 
-        videoStartupOverlay.classList.add(
-            "hidden"
-        );
+        // Wait until buffering/seek activity settles, then hide overlay.
+        await waitForStablePlayback(video, 2000);
 
-        videoStartupOverlay.setAttribute(
-            "aria-hidden",
-            "true"
-        );
+        videoStartupOverlay.classList.add("hidden");
+        videoStartupOverlay.setAttribute("aria-hidden", "true");
 
-        console.log(
-            "Webinar first playback frame is now ready."
-        );
+        console.log("Webinar first playback frame is now ready (stable).");
 
     };
 
-    video.addEventListener(
-        "playing",
-        revealVideo,
-        { once: true }
-    );
+    video.addEventListener("playing", revealVideo, { once: true });
 
     try {
 
