@@ -756,26 +756,38 @@ window.webinarHls =
     } catch (e) {}
 
     (function enableAbrWhenReady() {
-        const onFragBuffered = function (event, data) {
+        // Require either two FRAG_BUFFERED events or playback progress
+        // beyond 3 seconds before re-enabling ABR. This avoids an
+        // immediate up-switch that can cause renderer/decoder churn
+        // on many Android devices.
+        let fragCount = 0;
+        const requiredFrags = 2;
+
+        const tryEnable = function () {
             try {
                 const buffered = video.buffered;
-                if (buffered && buffered.length > 0) {
-                    const start = buffered.start(0);
-                    const end = buffered.end(0);
-                    // Ensure playhead is within buffered range (with small margin)
-                    if (video.currentTime + 0.2 >= start && video.currentTime <= end) {
-                        // Re-enable ABR and remove listener
-                        try {
-                            hls.autoLevelEnabled = true;
-                            console.log('HLS: autoLevel re-enabled after FRAG_BUFFERED');
-                        } catch (e) {}
-                        hls.off(Hls.Events.FRAG_BUFFERED, onFragBuffered);
-                    }
+                const time = video.currentTime || 0;
+                if (fragCount >= requiredFrags || time >= 3) {
+                    try {
+                        hls.autoLevelEnabled = true;
+                        console.log('HLS: autoLevel re-enabled after startup buffering');
+                    } catch (e) {}
+                    hls.off(Hls.Events.FRAG_BUFFERED, onFragBuffered);
                 }
             } catch (e) {}
         };
 
+        const onFragBuffered = function (event, data) {
+            fragCount++;
+            // TEMPORARY DIAGNOSTIC
+            console.log('[HLS DIAGNOSTIC] FRAG_BUFFERED count', fragCount, data);
+            tryEnable();
+        };
+
         hls.on(Hls.Events.FRAG_BUFFERED, onFragBuffered);
+
+        // Also watch timeupdate as a fallback trigger
+        video.addEventListener('timeupdate', tryEnable);
     })();
 
         hls.on(
