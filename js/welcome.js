@@ -142,11 +142,15 @@ beginBtn.addEventListener("click", async function () {
     // level switching. The overlay UX is preserved; we only
     // delay its removal until the playhead is covered by buffered
     // data and no seeking is in progress.
-    const waitForStablePlayback = function (videoEl, timeoutMs = 2000) {
+    const waitForStablePlayback = function (videoEl, timeoutMs = 4000) {
 
         return new Promise(function (resolve) {
 
             let finished = false;
+            // Hls-related flags
+            let fragBuffered = false;
+            let sawBufferSeekOverHole = false;
+            let hlsListeners = [];
 
             function cleanup() {
                 finished = true;
@@ -154,15 +158,28 @@ beginBtn.addEventListener("click", async function () {
                 videoEl.removeEventListener("progress", onProgress);
                 videoEl.removeEventListener("timeupdate", onTimeUpdate);
                 videoEl.removeEventListener("playing", onPlaying);
+                // remove hls listeners if registered
+                const hls = window.webinarHls;
+                if (hls && hlsListeners.length) {
+                    hlsListeners.forEach(function (l) {
+                        try { hls.off(l.ev, l.cb); } catch (e) {}
+                    });
+                    hlsListeners = [];
+                }
             }
 
             function isStable() {
                 if (videoEl.seeking) return false;
+
+                // If Hls.js signalled a tiny buffer-seek correction earlier,
+                // we should avoid revealing until we're confident.
+                if (sawBufferSeekOverHole) return false;
+
+                // If the video has a buffered range that covers the playhead,
+                // consider stable.
                 if (videoEl.buffered.length > 0) {
                     try {
                         const start = videoEl.buffered.start(0);
-                        // Consider stable when the playhead is within
-                        // ~150ms of the first buffered range start.
                         if (videoEl.currentTime + 0.15 >= start) {
                             return true;
                         }
@@ -170,6 +187,11 @@ beginBtn.addEventListener("click", async function () {
                         return false;
                     }
                 }
+
+                // As a fallback, if Hls.js has buffered the first frag,
+                // and we're not seeking, treat as stable.
+                if (fragBuffered && !videoEl.seeking) return true;
+
                 return false;
             }
 
@@ -201,6 +223,43 @@ beginBtn.addEventListener("click", async function () {
             videoEl.addEventListener("progress", onProgress);
             videoEl.addEventListener("timeupdate", onTimeUpdate);
             videoEl.addEventListener("playing", onPlaying);
+
+            // If Hls.js is in use, listen for the first frag buffered and
+            // for specific buffer-seek error diagnostics.
+            try {
+                const hls = window.webinarHls;
+                if (hls && typeof Hls !== "undefined") {
+                    const onFragBuffered = function (event, data) {
+                        // TEMPORARY DIAGNOSTIC
+                        console.log('[HLS DIAGNOSTIC] FRAG_BUFFERED', data);
+                        fragBuffered = true;
+                        attemptFinalize();
+                    };
+
+                    const onHlsError = function (event, data) {
+                        // TEMPORARY DIAGNOSTIC
+                        console.log('[HLS DIAGNOSTIC] ERROR', data);
+                        try {
+                            const details = data && data.details ? data.details : String(data);
+                            if (typeof details === 'string' && details.toLowerCase().includes('buffer')) {
+                                // common Hls details include 'bufferSeekOverHole' or 'bufferHole'
+                                if (details.toLowerCase().includes('seek') || details.toLowerCase().includes('hole')) {
+                                    sawBufferSeekOverHole = true;
+                                }
+                            }
+                        } catch (e) {}
+                        attemptFinalize();
+                    };
+
+                    hls.on(Hls.Events.FRAG_BUFFERED, onFragBuffered);
+                    hls.on(Hls.Events.ERROR, onHlsError);
+
+                    hlsListeners.push({ ev: Hls.Events.FRAG_BUFFERED, cb: onFragBuffered });
+                    hlsListeners.push({ ev: Hls.Events.ERROR, cb: onHlsError });
+                }
+            } catch (e) {
+                // ignore if Hls not available
+            }
 
             // Start an animation-frame polling loop as a fallback
             // to catch quick sequences that don't emit all events.
@@ -235,10 +294,78 @@ beginBtn.addEventListener("click", async function () {
         // Wait until buffering/seek activity settles, then hide overlay.
         await waitForStablePlayback(video, 2000);
 
+        // Initial hide
         videoStartupOverlay.classList.add("hidden");
         videoStartupOverlay.setAttribute("aria-hidden", "true");
 
-        console.log("Webinar first playback frame is now ready (stable).");
+        console.log("Webinar first playback frame is now ready (stable). Hiding overlay.");
+
+        // Short post-reveal guard: if a seeking / buffer-hole correction
+        // happens immediately after reveal (common on some Android devices),
+        // re-show the overlay and wait again for stability before hiding.
+        try {
+            const guardMs = 700;
+            const hls = window.webinarHls;
+
+            const waitForGuardEvent = function (ms) {
+                return new Promise(function (resolve) {
+                    let finished = false;
+                    function cleanup() {
+                        finished = true;
+                        video.removeEventListener('seeking', onSeek);
+                        if (hls && typeof Hls !== 'undefined') {
+                            try { hls.off(Hls.Events.ERROR, onHlsError); } catch (e) {}
+                        }
+                        clearTimeout(timer);
+                    }
+                    function onSeek() {
+                        if (finished) return;
+                        // TEMPORARY DIAGNOSTIC
+                        console.log('[POST-REVEAL GUARD] seeking detected');
+                        cleanup();
+                        resolve(true);
+                    }
+                    function onHlsError(event, data) {
+                        if (finished) return;
+                        // TEMPORARY DIAGNOSTIC
+                        console.log('[POST-REVEAL GUARD] HLS ERROR', data);
+                        try {
+                            const details = data && data.details ? data.details : String(data);
+                            if (typeof details === 'string' && (details.toLowerCase().includes('seek') || details.toLowerCase().includes('hole'))) {
+                                cleanup();
+                                resolve(true);
+                                return;
+                            }
+                        } catch (e) {}
+                    }
+                    let timer = setTimeout(function () {
+                        if (finished) return;
+                        cleanup();
+                        resolve(false);
+                    }, ms);
+
+                    video.addEventListener('seeking', onSeek);
+                    if (hls && typeof Hls !== 'undefined') {
+                        try { hls.on(Hls.Events.ERROR, onHlsError); } catch (e) {}
+                    }
+                });
+            };
+
+            const guardTriggered = await waitForGuardEvent(guardMs);
+            if (guardTriggered) {
+                // Re-show overlay and wait for stability again (one more time)
+                videoStartupOverlay.classList.remove('hidden');
+                videoStartupOverlay.setAttribute('aria-hidden', 'false');
+                console.log('[POST-REVEAL GUARD] re-showing overlay due to post-reveal event');
+                await waitForStablePlayback(video, 4000);
+                videoStartupOverlay.classList.add('hidden');
+                videoStartupOverlay.setAttribute('aria-hidden', 'true');
+                console.log('[POST-REVEAL GUARD] stability regained; hiding overlay');
+            }
+        } catch (e) {
+            // Fail silently — do not block UX
+            console.error('Post-reveal guard failed', e);
+        }
 
     };
 
